@@ -1,0 +1,3206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RateKaro - Honest Reviews</title>
+<meta name="theme-color" content="#000000">
+<style>
+:root {
+  --bg:       #0d0d0d;
+  --surface:  #161616;
+  --surface2: #1f1f1f;
+  --surface3: #252525;
+  --border:   #2e2e2e;
+  --accent:   #ff6b00;
+  --accent2:  #ffcc00;
+  --accent3:  #00e5a0;
+  --pink:     #ff2d78;
+  --blue:     #00b4ff;
+  --text:     #f0ede8;
+  --text2:    #888880;
+  --text3:    #555550;
+  --pos:      #00e5a0;
+  --neg:      #ff2d78;
+  --neu:      #ffcc00;
+  --radius:   14px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.35;
+}
+
+/* ─── AUTH PAGE ─── */
+#auth-page {
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  position:relative; z-index:1;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,107,0,.12) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at 100% 100%, rgba(255,204,0,.08) 0%, transparent 60%),
+              var(--bg);
+}
+
+.auth-wrap {
+  width: 460px;
+  animation: popIn .5s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes popIn {
+  from { opacity:0; transform:scale(.92) translateY(20px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+
+.auth-brand {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.brand-name {
+  font-family: 'Baloo 2', cursive;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--accent), var(--accent2) 50%, var(--pink));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  letter-spacing: -1px;
+}
+
+.brand-tag {
+  font-size: 13px;
+  color: var(--text2);
+  margin-top: 6px;
+  letter-spacing: .5px;
+}
+
+.brand-dots {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 10px;
+}
+
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+.dot:nth-child(1){ background:var(--accent); animation-delay:0s; }
+.dot:nth-child(2){ background:var(--accent2); animation-delay:.3s; }
+.dot:nth-child(3){ background:var(--pink); animation-delay:.6s; }
+
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+.auth-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px 40px;
+  box-shadow: 0 40px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,107,0,.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-card::before {
+  content:'';
+  position:absolute; top:-60px; right:-60px;
+  width:200px; height:200px;
+  background: radial-gradient(circle, rgba(255,107,0,.08), transparent 70%);
+  pointer-events:none;
+}
+
+.tab-bar {
+  display:flex; gap:4px;
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 28px;
+}
+
+.tab-btn {
+  flex:1; padding:10px;
+  border:none; border-radius:8px;
+  background:transparent;
+  color:var(--text2);
+  font-family:'Noto Sans', sans-serif;
+  font-size:14px; font-weight:500;
+  cursor:pointer; transition:all .2s;
+}
+
+.tab-btn.on {
+  background: linear-gradient(135deg, var(--accent), #ff9000);
+  color:#000; font-weight:700;
+  box-shadow: 0 4px 14px rgba(255,107,0,.4);
+}
+
+.form-group { margin-bottom:16px; }
+
+.form-label {
+  display:block;
+  font-size:11px; font-weight:600;
+  letter-spacing:1px; text-transform:uppercase;
+  color:var(--text2); margin-bottom:8px;
+}
+
+.form-input {
+  width:100%;
+  background:var(--surface2);
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  padding:13px 16px;
+  color:var(--text);
+  font-family:'Noto Sans', sans-serif;
+  font-size:15px;
+  outline:none;
+  transition:border-color .2s, box-shadow .2s;
+}
+.form-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(255,107,0,.12); }
+.form-input::placeholder { color:var(--text3); }
+
+.btn-main {
+  width:100%; padding:14px;
+  background: linear-gradient(135deg, var(--accent), #ff9000);
+  border:none; border-radius:10px;
+  color:#000; font-family:'Baloo 2', cursive;
+  font-size:16px; font-weight:800;
+  cursor:pointer; letter-spacing:.3px;
+  transition:transform .15s, box-shadow .2s, opacity .2s;
+  box-shadow:0 6px 20px rgba(255,107,0,.4);
+  margin-top:6px;
+}
+.btn-main:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(255,107,0,.5); }
+.btn-main:active { transform:translateY(0); }
+.btn-main:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+
+.err-msg {
+  background:rgba(255,45,120,.1);
+  border:1px solid rgba(255,45,120,.3);
+  border-radius:8px; padding:10px 14px;
+  color:var(--neg); font-size:13px; margin-bottom:14px;
+  display:none;
+}
+
+/* ─── MODE SELECTOR (McDonald's style) ─── */
+#mode-page {
+  display:none; min-height:100vh; flex-direction:column;
+  position:relative; z-index:1;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,107,0,.1) 0%, transparent 60%), var(--bg);
+}
+
+.mode-topbar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 24px; height:62px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+
+.mode-logo {
+  font-family:'Baloo 2', cursive;
+  font-size:24px; font-weight:800; letter-spacing:-.5px;
+  background:linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.mode-tagline { font-size:11px; color:var(--text3); margin-top:-3px; letter-spacing:.5px; }
+
+.mode-body {
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:40px 20px;
+}
+
+.mode-greet {
+  font-family:'Baloo 2', cursive;
+  font-size:36px; font-weight:800; text-align:center; margin-bottom:8px;
+  background:linear-gradient(135deg, var(--text), var(--accent2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+
+.mode-sub {
+  font-size:15px; color:var(--text2); text-align:center; margin-bottom:48px;
+  line-height:1.6;
+}
+
+.mode-cards {
+  display:flex; gap:24px; flex-wrap:wrap; justify-content:center;
+  max-width:720px; width:100%;
+}
+
+.mode-card {
+  flex:1; min-width:240px; max-width:300px;
+  background:var(--surface); border:2px solid var(--border);
+  border-radius:24px; padding:36px 28px;
+  cursor:pointer; transition:all .25s; text-align:center;
+  position:relative; overflow:hidden;
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1);
+}
+
+.mode-card:nth-child(2) { animation-delay:.1s; }
+
+.mode-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  opacity:0; transition:opacity .25s;
+}
+
+.mode-card.review-card-mode::before {
+  background:linear-gradient(90deg, var(--accent), var(--pink));
+}
+
+.mode-card.suggest-card-mode::before {
+  background:linear-gradient(90deg, var(--blue), var(--accent3));
+}
+
+.mode-card:hover {
+  transform:translateY(-6px);
+  border-color:var(--accent);
+  box-shadow:0 20px 50px rgba(255,107,0,.2);
+}
+
+.mode-card.suggest-card-mode:hover {
+  border-color:var(--blue);
+  box-shadow:0 20px 50px rgba(0,180,255,.2);
+}
+
+.mode-card:hover::before { opacity:1; }
+
+.mode-card-icon {
+  font-size:64px; display:block; margin-bottom:18px;
+  transition:transform .25s;
+}
+
+.mode-card:hover .mode-card-icon { transform:scale(1.12); }
+
+.mode-card-title {
+  font-family:'Baloo 2', cursive;
+  font-size:26px; font-weight:800; margin-bottom:8px;
+  color:var(--text);
+}
+
+.mode-card-desc {
+  font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:24px;
+}
+
+.mode-card-btn {
+  display:inline-block; padding:12px 32px;
+  border-radius:30px; font-family:'Baloo 2', cursive;
+  font-size:15px; font-weight:800; border:none; cursor:pointer;
+  transition:all .2s; letter-spacing:.3px;
+}
+
+.mode-card.review-card-mode .mode-card-btn {
+  background:linear-gradient(135deg, var(--accent), #ff9000);
+  color:#000; box-shadow:0 6px 20px rgba(255,107,0,.4);
+}
+
+.mode-card.suggest-card-mode .mode-card-btn {
+  background:linear-gradient(135deg, var(--blue), var(--accent3));
+  color:#000; box-shadow:0 6px 20px rgba(0,180,255,.3);
+}
+
+.mode-card-btn:hover { transform:scale(1.05); }
+
+.mode-badge {
+  position:absolute; top:14px; right:14px;
+  font-size:9px; font-weight:700; padding:3px 8px;
+  border-radius:10px; letter-spacing:.8px; text-transform:uppercase;
+}
+
+.mode-card.review-card-mode .mode-badge {
+  background:rgba(255,107,0,.15); color:var(--accent);
+  border:1px solid rgba(255,107,0,.2);
+}
+
+.mode-card.suggest-card-mode .mode-badge {
+  background:rgba(0,180,255,.12); color:var(--blue);
+  border:1px solid rgba(0,180,255,.2);
+}
+
+/* ─── MAIN APP ─── */
+#app-page { display:none; min-height:100vh; flex-direction:column; position:relative; z-index:1; }
+
+/* ─── TOPBAR ─── */
+.topbar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 24px; height:62px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100;
+  backdrop-filter:blur(12px);
+}
+
+.top-logo {
+  font-family:'Baloo 2', cursive;
+  font-size:24px; font-weight:800; letter-spacing:-.5px;
+  background:linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+
+.top-tagline {
+  font-size:11px; color:var(--text3); margin-top:-3px; letter-spacing:.5px;
+}
+
+.top-right { display:flex; align-items:center; gap:12px; }
+
+/* ─── MODE SWITCH PILL in topbar ─── */
+.mode-switch {
+  display:flex; gap:3px;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:30px; padding:3px;
+}
+
+.ms-btn {
+  padding:6px 14px; border:none; border-radius:24px;
+  background:transparent; color:var(--text2);
+  font-family:'Noto Sans', sans-serif; font-size:12px; font-weight:600;
+  cursor:pointer; transition:all .2s; white-space:nowrap;
+  display:flex; align-items:center; gap:5px;
+}
+
+.ms-btn.active-review {
+  background:linear-gradient(135deg, var(--accent), #ff9000);
+  color:#000;
+  box-shadow:0 3px 10px rgba(255,107,0,.4);
+}
+
+.ms-btn.active-suggest {
+  background:linear-gradient(135deg, var(--blue), var(--accent3));
+  color:#000;
+  box-shadow:0 3px 10px rgba(0,180,255,.3);
+}
+
+.user-pill {
+  display:flex; align-items:center; gap:8px;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:30px; padding:5px 14px 5px 6px;
+}
+
+.user-ava {
+  width:30px; height:30px; border-radius:50%;
+  background:linear-gradient(135deg, var(--accent), var(--pink));
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Baloo 2', cursive; font-size:13px; font-weight:800; color:#fff;
+}
+
+.user-nm { font-size:13px; font-weight:600; }
+.user-sub { font-size:10px; color:var(--accent); font-weight:600; }
+
+.btn-logout {
+  padding:7px 16px;
+  background:transparent; border:1px solid var(--border);
+  border-radius:8px; color:var(--text2);
+  font-family:'Noto Sans', sans-serif; font-size:13px;
+  cursor:pointer; transition:all .2s;
+}
+.btn-logout:hover { border-color:var(--neg); color:var(--neg); }
+
+/* ─── LAYOUT ─── */
+.main-grid {
+  display:grid;
+  grid-template-columns:230px 1fr 290px;
+  height:calc(100vh - 62px);
+}
+
+/* ─── LEFT SIDEBAR ─── */
+.left-sb {
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  overflow-y:auto;
+  padding:20px 0;
+}
+
+.sb-section-title {
+  font-size:9px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--text3);
+  padding:0 18px 10px;
+}
+
+.cat-btn {
+  display:flex; align-items:center; gap:12px;
+  padding:11px 18px; cursor:pointer;
+  border-left:3px solid transparent;
+  transition:background .15s, border-color .15s;
+  position:relative;
+}
+.cat-btn:hover { background:rgba(255,107,0,.06); }
+.cat-btn.active { background:rgba(255,107,0,.1); border-left-color:var(--accent); }
+
+.cat-emoji { font-size:22px; width:28px; text-align:center; }
+
+.cat-info { flex:1; }
+.cat-name { font-size:13px; font-weight:600; color:var(--text); line-height:1.2; }
+.cat-sub  { font-size:10px; color:var(--text3); line-height:1.2; }
+.cat-btn.active .cat-name { color:var(--accent); }
+.cat-btn.active .cat-sub  { color:rgba(255,107,0,.5); }
+
+.cat-count {
+  font-size:10px; font-weight:700;
+  background:var(--surface3); color:var(--text2);
+  border-radius:10px; padding:2px 8px;
+  min-width:24px; text-align:center;
+}
+.cat-btn.active .cat-count { background:rgba(255,107,0,.15); color:var(--accent); }
+
+.sb-divider { height:1px; background:var(--border); margin:14px 18px; }
+
+.vibe-box {
+  margin:14px 12px;
+  background:linear-gradient(135deg, rgba(255,107,0,.08), rgba(255,204,0,.05));
+  border:1px solid rgba(255,107,0,.15);
+  border-radius:12px; padding:14px;
+}
+.vibe-title { font-size:10px; font-weight:700; color:var(--accent); letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.vibe-stat { display:flex; justify-content:space-between; margin-bottom:4px; }
+.vibe-label { font-size:11px; color:var(--text2); }
+.vibe-val { font-size:11px; font-weight:700; }
+
+/* ─── CENTER ─── */
+.center-panel {
+  overflow-y:auto; padding:28px 28px;
+  background:var(--bg);
+}
+
+.welcome-state {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  height:100%; text-align:center; padding:40px;
+  animation:fadeSlide .5s ease;
+}
+
+.welcome-emoji { font-size:72px; margin-bottom:20px; display:block; line-height:1; }
+
+.welcome-title {
+  font-family:'Baloo 2', cursive;
+  font-size:30px; font-weight:800; letter-spacing:-.5px;
+  margin-bottom:10px; color:var(--text);
+}
+
+.welcome-sub { font-size:14px; color:var(--text2); line-height:1.7; max-width:380px; }
+
+.welcome-arrows {
+  margin-top:24px;
+  display:flex; align-items:center; gap:12px;
+  font-size:13px; color:var(--text3);
+}
+
+.panel-head {
+  margin-bottom:22px;
+  animation:fadeSlide .35s ease;
+}
+
+@keyframes fadeSlide {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.panel-title {
+  font-family:'Baloo 2', cursive;
+  font-size:28px; font-weight:800; letter-spacing:-.5px;
+  line-height:1.1; margin-bottom:4px;
+}
+
+.panel-sub {
+  font-size:13px; color:var(--text2);
+  display:flex; align-items:center; gap:8px;
+}
+
+.panel-badge {
+  font-size:10px; font-weight:700; padding:2px 8px;
+  border-radius:20px; letter-spacing:.5px; text-transform:uppercase;
+  background:rgba(255,107,0,.15); color:var(--accent);
+  border:1px solid rgba(255,107,0,.2);
+}
+
+.review-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px; margin-bottom:20px;
+  animation:fadeSlide .4s ease;
+  position:relative; overflow:hidden;
+}
+
+.review-card::after {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, var(--accent), var(--accent2), var(--pink));
+}
+
+.review-card-label {
+  font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  color:var(--text2); margin-bottom:14px;
+  display:flex; align-items:center; gap:8px;
+}
+
+.review-card-label span {
+  display:inline-block; width:6px; height:6px; border-radius:50%;
+  background:var(--accent); animation:pulse 1.5s infinite;
+}
+
+.review-textarea {
+  width:100%; min-height:110px;
+  background:var(--surface2); border:1.5px solid var(--border);
+  border-radius:10px; padding:14px 16px;
+  color:var(--text); font-family:'Noto Sans', sans-serif;
+  font-size:15px; resize:vertical; outline:none; line-height:1.6;
+  transition:border-color .2s, box-shadow .2s;
+}
+.review-textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(255,107,0,.1); }
+.review-textarea::placeholder { color:var(--text3); font-size:14px; }
+
+.review-row { display:flex; gap:10px; align-items:center; margin-top:12px; }
+
+.product-inp {
+  flex:1;
+  background:var(--surface2); border:1.5px solid var(--border);
+  border-radius:10px; padding:11px 16px;
+  color:var(--text); font-family:'Noto Sans', sans-serif; font-size:14px; outline:none;
+  transition:border-color .2s;
+}
+.product-inp:focus { border-color:var(--accent); }
+.product-inp::placeholder { color:var(--text3); }
+
+.btn-analyze {
+  padding:11px 20px;
+  background:linear-gradient(135deg, var(--accent), #ff9000);
+  border:none; border-radius:10px;
+  color:#000; font-family:'Baloo 2', cursive;
+  font-size:15px; font-weight:800;
+  cursor:pointer; white-space:nowrap;
+  transition:transform .15s, box-shadow .2s, opacity .2s;
+  box-shadow:0 4px 14px rgba(255,107,0,.4);
+}
+.btn-analyze:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(255,107,0,.5); }
+.btn-analyze:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+
+.hint-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.hint-tag {
+  font-size:11px; padding:4px 12px;
+  background:var(--surface3); border:1px solid var(--border);
+  border-radius:20px; color:var(--text2); cursor:pointer;
+  transition:all .2s;
+}
+.hint-tag:hover { border-color:var(--accent); color:var(--accent); background:rgba(255,107,0,.06); }
+
+/* ─── RESULT CARD ─── */
+.result-wrap {
+  display:none; margin-bottom:22px;
+  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+.result-wrap.show { display:block; }
+
+.result-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius); padding:22px;
+  position:relative; overflow:hidden;
+}
+
+.result-glow {
+  position:absolute; top:-40px; right:-40px;
+  width:150px; height:150px; border-radius:50%;
+  pointer-events:none; opacity:.3;
+  transition:background 1s;
+}
+
+.result-glow.positive { background:radial-gradient(circle, var(--pos), transparent 70%); }
+.result-glow.negative { background:radial-gradient(circle, var(--neg), transparent 70%); }
+.result-glow.neutral  { background:radial-gradient(circle, var(--neu), transparent 70%); }
+
+.result-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px; }
+
+.result-verdict {
+  font-family:'Baloo 2', cursive;
+  font-size:22px; font-weight:800; letter-spacing:-.3px;
+}
+
+.verdict-sub { font-size:12px; color:var(--text2); margin-top:2px; }
+
+.sentiment-pill {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:8px 18px; border-radius:30px;
+  font-family:'Baloo 2', cursive; font-size:17px; font-weight:800;
+}
+.sentiment-pill.positive { background:rgba(0,229,160,.12); color:var(--pos); border:1px solid rgba(0,229,160,.25); }
+.sentiment-pill.negative { background:rgba(255,45,120,.12);  color:var(--neg); border:1px solid rgba(255,45,120,.25); }
+.sentiment-pill.neutral  { background:rgba(255,204,0,.12);   color:var(--neu); border:1px solid rgba(255,204,0,.25); }
+
+.score-bars { display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
+
+.score-row { display:flex; align-items:center; gap:10px; }
+.score-lbl { width:80px; font-size:12px; color:var(--text2); }
+.score-track { flex:1; height:9px; background:var(--surface2); border-radius:10px; overflow:hidden; }
+.score-fill { height:100%; border-radius:10px; transition:width 1.2s cubic-bezier(.22,1,.36,1); width:0%; }
+.score-fill.pos { background:linear-gradient(90deg, var(--pos), #38d49a); }
+.score-fill.neg { background:linear-gradient(90deg, var(--neg), #ff1f6a); }
+.score-fill.neu { background:linear-gradient(90deg, var(--neu), #ffaa00); }
+.score-pct { width:38px; font-size:12px; font-weight:700; text-align:right; }
+.score-pct.pos { color:var(--pos); }
+.score-pct.neg { color:var(--neg); }
+.score-pct.neu { color:var(--neu); }
+
+.result-note {
+  font-size:13px; color:var(--text2); line-height:1.6;
+  background:var(--surface2); border-radius:10px; padding:12px 16px;
+  border-left:3px solid var(--accent);
+}
+
+/* ─── REVIEWS LIST ─── */
+.reviews-section { animation:fadeSlide .4s ease; }
+
+.section-hd {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.section-title {
+  font-family:'Baloo 2', cursive;
+  font-size:17px; font-weight:800;
+}
+
+.section-count {
+  font-size:12px; color:var(--text2);
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:20px; padding:3px 10px;
+}
+
+.review-item {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px; padding:14px 16px;
+  margin-bottom:8px; transition:border-color .2s, transform .15s;
+  animation:fadeSlide .3s ease;
+}
+.review-item:hover { border-color:rgba(255,107,0,.3); transform:translateX(3px); }
+
+.ri-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:6px; }
+
+.ri-product {
+  font-family:'Baloo 2', cursive;
+  font-size:14px; font-weight:800;
+}
+
+.mini-pill {
+  font-size:10px; font-weight:700; padding:3px 10px;
+  border-radius:20px; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap;
+}
+.mini-pill.positive { background:rgba(0,229,160,.12); color:var(--pos); }
+.mini-pill.negative { background:rgba(255,45,120,.12); color:var(--neg); }
+.mini-pill.neutral  { background:rgba(255,204,0,.12);  color:var(--neu); }
+
+.ri-text { font-size:12.5px; color:var(--text2); line-height:1.5; }
+.ri-meta { font-size:10px; color:var(--text3); margin-top:6px; display:flex; gap:10px; }
+.ri-meta span { display:flex; align-items:center; gap:3px; }
+
+/* ─── RIGHT SIDEBAR (Review Mode) ─── */
+.right-sb {
+  background:var(--surface);
+  border-left:1px solid var(--border);
+  overflow-y:auto; padding:20px 16px;
+}
+
+.rsb-header { margin-bottom:16px; }
+
+.rsb-title {
+  font-family:'Baloo 2', cursive;
+  font-size:17px; font-weight:800; margin-bottom:2px;
+}
+.rsb-sub { font-size:11px; color:var(--text2); }
+
+.suggest-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:16px; }
+
+.sg-btn {
+  display:flex; flex-direction:column; align-items:center;
+  padding:8px 4px;
+  background:var(--surface2); border:1.5px solid var(--border);
+  border-radius:10px; cursor:pointer; transition:all .2s; text-align:center;
+}
+.sg-btn:hover { border-color:var(--accent); }
+.sg-btn.on { background:rgba(255,107,0,.1); border-color:var(--accent); }
+
+.sg-icon { font-size:16px; margin-bottom:3px; display:block; }
+.sg-label { font-size:9px; font-weight:600; color:var(--text2); letter-spacing:.3px; }
+.sg-btn.on .sg-label { color:var(--accent); }
+
+.pc-card {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:12px; padding:13px; margin-bottom:8px;
+  transition:all .2s; cursor:pointer; animation:fadeSlide .3s ease;
+}
+.pc-card:hover { border-color:rgba(255,107,0,.3); transform:translateY(-1px); }
+
+.pc-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.pc-name { font-family:'Baloo 2', cursive; font-size:13px; font-weight:800; line-height:1.2; }
+.pc-dominant { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-left:6px; }
+.pc-dominant.positive { background:var(--pos); box-shadow:0 0 6px var(--pos); }
+.pc-dominant.negative { background:var(--neg); box-shadow:0 0 6px var(--neg); }
+.pc-dominant.neutral  { background:var(--neu); box-shadow:0 0 6px var(--neu); }
+
+.pc-bars { display:flex; flex-direction:column; gap:4px; margin-bottom:8px; }
+.pc-bar-row { display:flex; align-items:center; gap:6px; }
+.pc-bar-lbl { width:12px; font-size:10px; font-weight:800; }
+.pc-bar-track { flex:1; height:5px; background:var(--border); border-radius:5px; overflow:hidden; }
+.pc-bar-fill { height:100%; border-radius:5px; transition:width 1s cubic-bezier(.22,1,.36,1); }
+.pc-bar-fill.pos { background:linear-gradient(90deg, var(--pos), #38d49a); }
+.pc-bar-fill.neg { background:linear-gradient(90deg, var(--neg), #ff1f6a); }
+.pc-bar-fill.neu { background:linear-gradient(90deg, var(--neu), #ffaa00); }
+.pc-bar-pct { width:26px; font-size:9px; color:var(--text2); text-align:right; }
+
+.pc-footer { display:flex; align-items:center; justify-content:space-between; }
+.pc-count { font-size:9px; color:var(--text3); }
+.pc-buy-tag {
+  font-size:8px; font-weight:700; padding:2px 6px;
+  border-radius:6px; letter-spacing:.5px;
+}
+.pc-buy-tag.recommended   { background:rgba(0,229,160,.1); color:var(--pos); }
+.pc-buy-tag.not-recommended { background:rgba(255,45,120,.1); color:var(--neg); }
+.pc-buy-tag.consider      { background:rgba(255,204,0,.1); color:var(--neu); }
+
+.empty-state { text-align:center; padding:28px 16px; color:var(--text3); font-size:12px; }
+.empty-state .es-ico { font-size:36px; display:block; margin-bottom:10px; }
+
+/* ─── PRODUCT COMMENTS MODAL ─── */
+#comments-modal {
+  display:none; position:fixed; inset:0; z-index:500;
+  background:rgba(0,0,0,.75); backdrop-filter:blur(6px);
+  align-items:center; justify-content:center; padding:20px;
+}
+#comments-modal.open { display:flex; }
+
+.modal-box {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:18px; width:100%; max-width:560px; max-height:82vh;
+  display:flex; flex-direction:column;
+  box-shadow:0 40px 80px rgba(0,0,0,.7);
+  animation:popIn .3s cubic-bezier(.34,1.56,.64,1);
+  overflow:hidden;
+}
+
+.modal-head {
+  padding:20px 22px 16px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.modal-head::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, var(--accent), var(--accent2), var(--pink));
+}
+
+.modal-product-name {
+  font-family:'Baloo 2', cursive;
+  font-size:20px; font-weight:800; letter-spacing:-.3px; margin-bottom:4px;
+}
+
+.modal-stats { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+
+.modal-stat-pill {
+  font-size:10px; font-weight:700; padding:3px 10px;
+  border-radius:20px; letter-spacing:.5px;
+}
+.modal-stat-pill.pos { background:rgba(0,229,160,.12); color:var(--pos); }
+.modal-stat-pill.neg { background:rgba(255,45,120,.12); color:var(--neg); }
+.modal-stat-pill.neu { background:rgba(255,204,0,.12); color:var(--neu); }
+
+.modal-close {
+  position:absolute; top:16px; right:16px;
+  width:30px; height:30px; border-radius:50%;
+  background:var(--surface2); border:1px solid var(--border);
+  color:var(--text2); font-size:15px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .2s;
+}
+.modal-close:hover { background:rgba(255,45,120,.15); color:var(--neg); border-color:var(--neg); }
+
+.modal-bars { padding:14px 22px 12px; border-bottom:1px solid var(--border); }
+.modal-bar-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.modal-bar-lbl { width:76px; font-size:11px; color:var(--text2); }
+.modal-bar-track { flex:1; height:8px; background:var(--surface2); border-radius:10px; overflow:hidden; }
+.modal-bar-fill { height:100%; border-radius:10px; }
+.modal-bar-fill.pos { background:linear-gradient(90deg, var(--pos), #38d49a); }
+.modal-bar-fill.neg { background:linear-gradient(90deg, var(--neg), #ff1f6a); }
+.modal-bar-fill.neu { background:linear-gradient(90deg, var(--neu), #ffaa00); }
+.modal-bar-pct { width:34px; font-size:11px; font-weight:700; text-align:right; }
+.modal-bar-pct.pos { color:var(--pos); }
+.modal-bar-pct.neg { color:var(--neg); }
+.modal-bar-pct.neu { color:var(--neu); }
+
+.modal-comments-title {
+  font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+  color:var(--text3); padding:12px 22px 8px;
+}
+
+.modal-comments-list { overflow-y:auto; padding:0 16px 16px; flex:1; }
+
+.modal-comment {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:10px; padding:12px 14px; margin-bottom:8px;
+  animation:fadeSlide .25s ease;
+  transition:border-color .2s;
+}
+.modal-comment:hover { border-color:rgba(255,107,0,.25); }
+
+.mc-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.mc-user { font-size:12px; font-weight:600; color:var(--accent); }
+.mc-time { font-size:10px; color:var(--text3); }
+.mc-text { font-size:13px; color:var(--text); line-height:1.5; }
+
+.mc-scores { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+.mc-score {
+  font-size:9px; font-weight:700; padding:2px 8px;
+  border-radius:10px; letter-spacing:.3px;
+}
+.mc-score.pos { background:rgba(0,229,160,.1); color:var(--pos); }
+.mc-score.neg { background:rgba(255,45,120,.1); color:var(--neg); }
+.mc-score.neu { background:rgba(255,204,0,.1); color:var(--neu); }
+
+/* ─── SPINNER ─── */
+.spin { display:inline-block; width:15px; height:15px; border:2px solid rgba(0,0,0,.3); border-top-color:#000; border-radius:50%; animation:rotate .7s linear infinite; vertical-align:middle; margin-right:6px; }
+@keyframes rotate { to { transform:rotate(360deg); } }
+
+/* ─── TOASTS ─── */
+#toast-area { position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px; }
+.toast {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:12px 18px;
+  font-size:13px; max-width:300px;
+  animation:toastIn .3s ease;
+  box-shadow:0 10px 30px rgba(0,0,0,.5);
+  display:flex; align-items:center; gap:10px;
+}
+.toast.success { border-color:rgba(0,229,160,.3); }
+.toast.error { border-color:rgba(255,45,120,.3); }
+@keyframes toastIn { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
+
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+/* ══════════════════════════════════════════
+   SUGGESTIONS DASHBOARD PAGE
+══════════════════════════════════════════ */
+#suggest-page {
+  display:none; min-height:100vh; flex-direction:column; position:relative; z-index:1;
+}
+
+.suggest-layout {
+  display:grid;
+  grid-template-columns:260px 1fr;
+  height:calc(100vh - 62px);
+}
+
+/* Suggest Left Sidebar */
+.suggest-left {
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  overflow-y:auto; padding:20px 0;
+  display:flex; flex-direction:column;
+}
+
+.suggest-left-head {
+  padding:0 16px 14px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:14px;
+}
+
+.suggest-left-title {
+  font-family:'Baloo 2', cursive;
+  font-size:16px; font-weight:800; margin-bottom:4px;
+}
+
+/* Search bar inside suggest sidebar */
+.suggest-search-wrap {
+  position:relative; margin:0 12px 12px;
+}
+
+.suggest-search-input {
+  width:100%; padding:10px 36px 10px 14px;
+  background:var(--surface2); border:1.5px solid var(--border);
+  border-radius:10px; color:var(--text);
+  font-family:'Noto Sans', sans-serif; font-size:13px; outline:none;
+  transition:border-color .2s, box-shadow .2s;
+}
+.suggest-search-input:focus {
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(0,180,255,.1);
+}
+.suggest-search-input::placeholder { color:var(--text3); }
+
+.suggest-search-icon {
+  position:absolute; right:11px; top:50%; transform:translateY(-50%);
+  font-size:14px; pointer-events:none; color:var(--text3);
+}
+
+/* Search recommendations dropdown */
+.search-recs {
+  position:absolute; top:calc(100% + 4px); left:0; right:0; z-index:200;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,.5);
+  display:none;
+}
+.search-recs.show { display:block; }
+
+.search-rec-item {
+  display:flex; align-items:center; gap:10px;
+  padding:9px 14px; cursor:pointer; transition:background .15s;
+}
+.search-rec-item:hover { background:rgba(255,107,0,.08); }
+
+.src-emoji { font-size:14px; }
+.src-name { font-size:12px; font-weight:600; color:var(--text); flex:1; }
+.src-cat { font-size:10px; color:var(--text3); }
+
+.src-sentiment {
+  font-size:9px; font-weight:700; padding:2px 6px;
+  border-radius:8px; white-space:nowrap;
+}
+.src-sentiment.pos { background:rgba(0,229,160,.12); color:var(--pos); }
+.src-sentiment.neg { background:rgba(255,45,120,.12); color:var(--neg); }
+.src-sentiment.neu { background:rgba(255,204,0,.12); color:var(--neu); }
+
+/* Suggest cat buttons */
+.suggest-cat-list { flex:1; }
+
+.scat-btn {
+  display:flex; align-items:center; gap:12px;
+  padding:11px 18px; cursor:pointer;
+  border-left:3px solid transparent;
+  transition:background .15s, border-color .15s;
+}
+.scat-btn:hover { background:rgba(0,180,255,.06); }
+.scat-btn.active { background:rgba(0,180,255,.1); border-left-color:var(--blue); }
+.scat-btn.active .cat-name { color:var(--blue); }
+.scat-btn.active .cat-sub  { color:rgba(0,180,255,.5); }
+.scat-btn.active .cat-count { background:rgba(0,180,255,.12); color:var(--blue); }
+
+/* Suggest Main Content */
+.suggest-main {
+  overflow-y:auto; background:var(--bg); padding:28px;
+}
+
+/* Welcome state for suggestions */
+.sug-welcome {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  height:100%; text-align:center; padding:40px;
+  animation:fadeSlide .5s ease;
+}
+
+/* Most / Least Loved section */
+.loved-banner {
+  display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:0 0 28px;
+  animation:fadeSlide .4s ease;
+}
+
+.loved-card {
+  border-radius:16px; padding:20px;
+  position:relative; overflow:hidden;
+  cursor:pointer; transition:transform .2s, box-shadow .2s;
+}
+.loved-card:hover { transform:translateY(-3px); }
+
+.loved-card.most-loved {
+  background:linear-gradient(135deg, rgba(0,229,160,.12), rgba(0,180,255,.06));
+  border:1px solid rgba(0,229,160,.25);
+}
+
+.loved-card.least-loved {
+  background:linear-gradient(135deg, rgba(255,45,120,.12), rgba(255,107,0,.06));
+  border:1px solid rgba(255,45,120,.25);
+}
+
+.loved-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+}
+.loved-card.most-loved::before { background:linear-gradient(90deg, var(--pos), var(--blue)); }
+.loved-card.least-loved::before { background:linear-gradient(90deg, var(--neg), var(--accent)); }
+
+.loved-badge {
+  font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  padding:3px 10px; border-radius:10px; display:inline-block; margin-bottom:8px;
+}
+.most-loved .loved-badge { background:rgba(0,229,160,.15); color:var(--pos); }
+.least-loved .loved-badge { background:rgba(255,45,120,.15); color:var(--neg); }
+
+.loved-icon { font-size:28px; margin-bottom:6px; }
+
+.loved-product-name {
+  font-family:'Baloo 2', cursive;
+  font-size:16px; font-weight:800; margin-bottom:4px; color:var(--text);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+.loved-cat-badge {
+  font-size:10px; color:var(--text2); margin-bottom:8px;
+}
+
+.loved-score {
+  font-family:'Baloo 2', cursive;
+  font-size:28px; font-weight:800; line-height:1;
+}
+.most-loved .loved-score { color:var(--pos); }
+.least-loved .loved-score { color:var(--neg); }
+
+.loved-score-label { font-size:10px; color:var(--text2); margin-top:2px; }
+
+.loved-total { font-size:10px; color:var(--text3); margin-top:4px; }
+.loved-highlight-row { display:flex; align-items:center; gap:12px; margin:4px 0 10px; }
+.loved-product-image { width:76px; height:76px; flex:none; object-fit:contain; background:#fff; }
+.loved-product-details { min-width:0; }
+.loved-product-price { margin:5px 0; color:#161616; font-size:15px; font-weight:700; }
+
+/* Suggest products grid */
+.sug-products-header {
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;
+}
+
+.sug-products-title {
+  font-family:'Baloo 2', cursive;
+  font-size:22px; font-weight:800; letter-spacing:-.3px;
+}
+
+.sug-filter-row {
+  display:flex; gap:8px;
+}
+
+.sug-filter-btn {
+  padding:5px 12px; border-radius:20px;
+  background:var(--surface2); border:1px solid var(--border);
+  color:var(--text2); font-size:11px; font-weight:600;
+  cursor:pointer; transition:all .2s;
+}
+.sug-filter-btn.active {
+  background:rgba(0,180,255,.12); border-color:var(--blue); color:var(--blue);
+}
+.sug-filter-btn:hover { border-color:var(--blue); color:var(--blue); }
+
+/* Product suggestion cards (bigger than the old right-sidebar ones) */
+.sug-cards-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:14px;
+}
+
+.sug-pc-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:16px; padding:18px;
+  cursor:pointer; transition:all .2s; animation:fadeSlide .3s ease;
+  position:relative; overflow:hidden;
+}
+.sug-pc-card:hover { border-color:rgba(0,180,255,.35); transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,.3); }
+
+.sug-pc-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+}
+.sug-pc-card.sentiment-positive::before { background:linear-gradient(90deg, var(--pos), #38d49a); }
+.sug-pc-card.sentiment-negative::before { background:linear-gradient(90deg, var(--neg), #ff1f6a); }
+.sug-pc-card.sentiment-neutral::before  { background:linear-gradient(90deg, var(--neu), #ffaa00); }
+
+.sug-pc-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
+
+.sug-pc-name {
+  font-family:'Baloo 2', cursive;
+  font-size:15px; font-weight:800; line-height:1.2;
+  flex:1; margin-right:8px;
+}
+
+.sug-pc-verdict {
+  font-size:9px; font-weight:700; padding:3px 8px; border-radius:8px;
+  letter-spacing:.5px; white-space:nowrap; flex-shrink:0;
+}
+.sug-pc-verdict.pos { background:rgba(0,229,160,.12); color:var(--pos); }
+.sug-pc-verdict.neg { background:rgba(255,45,120,.12); color:var(--neg); }
+.sug-pc-verdict.neu { background:rgba(255,204,0,.12); color:var(--neu); }
+
+.sug-pc-bars { display:flex; flex-direction:column; gap:5px; margin-bottom:10px; }
+.sug-pc-bar-row { display:flex; align-items:center; gap:6px; }
+.sug-pc-bar-lbl { width:10px; font-size:10px; font-weight:800; }
+.sug-pc-bar-track { flex:1; height:5px; background:var(--border); border-radius:5px; overflow:hidden; }
+.sug-pc-bar-fill { height:100%; border-radius:5px; }
+.sug-pc-bar-fill.pos { background:linear-gradient(90deg, var(--pos), #38d49a); }
+.sug-pc-bar-fill.neg { background:linear-gradient(90deg, var(--neg), #ff1f6a); }
+.sug-pc-bar-fill.neu { background:linear-gradient(90deg, var(--neu), #ffaa00); }
+.sug-pc-bar-pct { width:28px; font-size:9px; font-weight:700; text-align:right; }
+.sug-pc-bar-pct.pos { color:var(--pos); }
+.sug-pc-bar-pct.neg { color:var(--neg); }
+.sug-pc-bar-pct.neu { color:var(--neu); }
+
+.sug-pc-footer {
+  display:flex; align-items:center; justify-content:space-between;
+  padding-top:8px; border-top:1px solid var(--border);
+}
+.sug-pc-reviews { font-size:10px; color:var(--text3); }
+.sug-pc-click { font-size:9px; color:var(--text3); letter-spacing:.3px; }
+
+/* Suggest search result state */
+.search-result-state {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:16px; padding:20px; margin-bottom:20px;
+  animation:fadeSlide .3s ease;
+}
+.sr-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.sr-query {
+  font-family:'Baloo 2', cursive;
+  font-size:18px; font-weight:800;
+}
+.sr-count { font-size:12px; color:var(--text2); }
+.sr-clear {
+  margin-left:auto; padding:5px 12px;
+  background:transparent; border:1px solid var(--border);
+  border-radius:8px; color:var(--text2); font-size:12px;
+  cursor:pointer; transition:all .2s;
+}
+.sr-clear:hover { border-color:var(--neg); color:var(--neg); }
+
+/* Production storefront theme */
+:root {
+  --bg:#f2f2f2;
+  --surface:#ffffff;
+  --surface2:#f7f7f7;
+  --surface3:#eeeeee;
+  --border:#e0e0e0;
+  --accent:#ff6b00;
+  --accent2:#ff6b00;
+  --accent3:#1a9e3a;
+  --pink:#d32f2f;
+  --blue:#333333;
+  --text:#161616;
+  --text2:#555555;
+  --text3:#777777;
+  --pos:#1a9e3a;
+  --neg:#d32f2f;
+  --neu:#777777;
+  --radius:8px;
+}
+
+* {
+  font-family:Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+  background-image:none !important;
+}
+
+html, body { min-height:100%; }
+body { background:#f2f2f2; color:#161616; }
+body::before { display:none; }
+#auth-page, #mode-page, #app-page, #suggest-page { background:#f2f2f2; }
+#auth-page { min-height:calc(100vh - 44px); }
+#mode-page, #app-page, #suggest-page { min-height:calc(100vh - 44px); }
+
+.brand-name, .mode-logo, .top-logo {
+  background:none !important;
+  -webkit-text-fill-color:currentColor !important;
+  color:#ff6b00 !important;
+  font-weight:700;
+  letter-spacing:0;
+}
+.brand-name { font-size:42px; }
+.brand-tag, .mode-tagline, .top-tagline { color:#ffffff; letter-spacing:0; }
+.brand-tag { color:#555555; }
+.brand-dots, .mode-card-icon, .welcome-emoji, .cat-emoji, .sg-icon,
+.loved-icon, .es-ico, .src-emoji, .user-ava, .user-sub { display:none !important; }
+
+.auth-wrap { animation:none; }
+.auth-card, .mode-card, .review-card, .result-card, .review-item, .pc-card,
+.left-sb, .right-sb, .suggest-left, .suggest-main, .search-result-state,
+.loved-card, .sug-pc-card, .modal-box, .modal-comment, .vibe-box,
+.section-count, .hint-tag, .result-note {
+  background:#ffffff !important;
+  border:1px solid #e0e0e0 !important;
+  border-radius:8px !important;
+}
+.auth-card, .mode-card, .review-card, .result-card, .review-item, .pc-card,
+.loved-card, .sug-pc-card, .modal-box, .modal-comment {
+  box-shadow:0 1px 3px rgba(0,0,0,.1) !important;
+}
+.auth-card { padding:32px; }
+.auth-card::before, .mode-card::before, .review-card::after, .result-glow,
+.sug-pc-card::before, .loved-card::before, .modal-head::after { display:none !important; }
+.mode-body { justify-content:flex-start; padding-top:56px; }
+.mode-greet, .mode-card-title, .welcome-title, .panel-title,
+.section-title, .rsb-title, .suggest-left-title, .sug-products-title,
+.sug-pc-name, .sr-query, .modal-product-name, .ri-product {
+  color:#161616 !important;
+  font-weight:700 !important;
+  letter-spacing:0 !important;
+}
+.mode-greet { font-size:28px; }
+.mode-sub, .mode-card-desc, .welcome-sub, .panel-sub, .rsb-sub,
+.vibe-label, .ri-text, .sug-pc-reviews, .sug-pc-click { color:#555555 !important; }
+
+.mode-topbar, .topbar {
+  display:grid;
+  grid-template-columns:minmax(170px, 1fr) minmax(280px, 560px) minmax(180px, 1fr);
+  gap:20px;
+  height:64px;
+  padding:0 24px;
+  background:#000000 !important;
+  border:0;
+  border-radius:0;
+  position:sticky;
+  top:0;
+  z-index:100;
+  backdrop-filter:none;
+}
+.mode-topbar { position:relative; }
+.header-brand { min-width:0; }
+.top-logo, .mode-logo { font-size:24px; line-height:1.1; }
+.top-tagline, .mode-tagline { margin:2px 0 0; font-size:11px; }
+.header-search { width:100%; }
+.header-search input {
+  width:100%;
+  height:38px;
+  padding:0 14px;
+  border:1px solid #e0e0e0;
+  border-radius:6px;
+  outline:none;
+  background:#ffffff;
+  color:#161616;
+  font-size:13px;
+}
+.header-search input:focus { border-color:#ff6b00; }
+.header-search input::placeholder { color:#777777; }
+.top-right { justify-content:flex-end; gap:14px; }
+.header-user { color:#ffffff; font-size:14px; font-weight:600; }
+.btn-logout {
+  padding:8px 14px;
+  background:#ffffff;
+  border:1px solid #ff6b00;
+  border-radius:6px;
+  color:#161616;
+  font-size:13px;
+}
+.btn-logout:hover { border-color:#ff6b00; color:#ff6b00; }
+.mode-nav {
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  border-bottom:1px solid #e0e0e0;
+}
+.mode-switch { background:transparent; border:0; border-radius:0; padding:0; gap:8px; }
+.ms-btn {
+  padding:8px 14px;
+  border:1px solid transparent;
+  border-radius:6px;
+  color:#333333;
+  font-size:13px;
+}
+.ms-btn.active-review, .ms-btn.active-suggest {
+  background:#fff3e6;
+  border-color:#ff6b00;
+  color:#161616;
+}
+
+.main-grid {
+  height:auto;
+  min-height:calc(100vh - 150px);
+  grid-template-columns:230px minmax(0, 1fr) 280px;
+}
+.suggest-layout {
+  height:auto;
+  min-height:calc(100vh - 150px);
+  grid-template-columns:250px minmax(0, 1fr);
+}
+.left-sb, .right-sb, .suggest-left {
+  overflow:visible;
+  padding:18px 12px;
+  border-right:1px solid #e0e0e0;
+  border-left:0;
+}
+.left-sb { border-radius:0; }
+.center-panel { overflow:visible; background:#f2f2f2; padding:24px; }
+.suggest-main { overflow:visible; background:#f2f2f2; padding:80px 24px 24px; }
+.topbar { position:sticky; top:0; z-index:200; }
+.sb-section-title { color:#161616; font-size:14px; letter-spacing:0; text-transform:none; padding:0 8px 12px; }
+.cat-btn, .scat-btn { padding:11px 12px; border-left:0; border-radius:6px; gap:8px; }
+.cat-btn:hover, .scat-btn:hover { background:#fff8f1; }
+.cat-btn.active, .scat-btn.active {
+  background:#fff3e6;
+  border-left:0;
+}
+.cat-name { color:#161616; font-size:13px; }
+.cat-sub { color:#777777; }
+.cat-btn.active .cat-name, .scat-btn.active .cat-name { color:#161616; }
+.cat-btn.active .cat-sub, .scat-btn.active .cat-sub { color:#555555; }
+.cat-count { background:#f2f2f2; color:#555555; border-radius:12px; }
+.cat-btn.active .cat-count, .scat-btn.active .cat-count { background:#ffe2c2; color:#161616; }
+.vibe-box { margin:14px 0; padding:14px; }
+.vibe-title { color:#161616; letter-spacing:0; }
+.suggest-search-wrap { display:none; }
+.suggest-left-head { border-color:#e0e0e0; }
+.suggest-stats-box {
+  background:#ffffff;
+  border:1px solid #e0e0e0;
+  border-radius:8px;
+  padding:14px;
+}
+.suggest-cat-list { margin-top:8px; }
+.search-recs { background:#ffffff; border-color:#e0e0e0; box-shadow:0 1px 3px rgba(0,0,0,.1) !important; }
+.search-rec-item:hover { background:#fff3e6; }
+.src-name { color:#161616; }
+.src-cat { color:#777777; }
+
+.btn-main, .btn-analyze, .mode-card-btn {
+  background:#ff6b00 !important;
+  color:#ffffff !important;
+  border:1px solid #ff6b00 !important;
+  border-radius:6px !important;
+  font-weight:600 !important;
+  transform:none !important;
+}
+.btn-main:hover, .btn-analyze:hover, .mode-card-btn:hover { background:#e65f00 !important; }
+.btn-main:disabled, .btn-analyze:disabled { opacity:.55; }
+.tab-btn.on { background:#ff6b00 !important; color:#ffffff !important; }
+.form-input, .review-textarea, .product-inp, .suggest-search-input {
+  background:#ffffff !important;
+  color:#161616 !important;
+  border:1px solid #d5d5d5 !important;
+  border-radius:6px !important;
+}
+.form-input:focus, .review-textarea:focus, .product-inp:focus,
+.suggest-search-input:focus { border-color:#ff6b00 !important; box-shadow:none !important; }
+.form-label { color:#333333; }
+.panel-badge { background:#fff3e6; color:#333333; border:1px solid #e0e0e0; }
+.panel-title { font-size:24px; }
+.welcome-state { min-height:320px; }
+.welcome-sub { max-width:540px; }
+.review-card-label { color:#333333; }
+.review-card-label span { background:#ff6b00; animation:none; }
+.result-note { color:#555555; border-left:3px solid #ff6b00; }
+.sentiment-pill.positive, .mini-pill.positive { background:#e8f5e9; color:#1a9e3a; border:1px solid #c8e6c9; }
+.sentiment-pill.negative, .mini-pill.negative { background:#ffebee; color:#d32f2f; border:1px solid #ffcdd2; }
+.sentiment-pill.neutral, .mini-pill.neutral { background:#f2f2f2; color:#555555; border:1px solid #e0e0e0; }
+.score-fill.pos, .pc-bar-fill.pos, .sug-pc-bar-fill.pos, .modal-bar-fill.pos { background:#1a9e3a; }
+.score-fill.neg, .pc-bar-fill.neg, .sug-pc-bar-fill.neg, .modal-bar-fill.neg { background:#d32f2f; }
+.score-fill.neu, .pc-bar-fill.neu, .sug-pc-bar-fill.neu, .modal-bar-fill.neu { background:#999999; }
+.score-track, .pc-bar-track, .sug-pc-bar-track, .modal-bar-track { background:#eeeeee; }
+.score-track { height:6px; }
+.hint-tag { color:#555555; }
+.section-title { font-size:18px; }
+.ri-product { font-size:14px; }
+.ri-meta, .ri-meta span { color:#777777; }
+.sg-btn, .pc-card { background:#ffffff; border-color:#e0e0e0; }
+.sg-btn.on { background:#fff3e6; border-color:#ff6b00; }
+.sg-label, .pc-name { color:#161616; }
+.pc-buy-tag.recommended { background:#e8f5e9; color:#1a9e3a; }
+.pc-buy-tag.not-recommended { background:#ffebee; color:#d32f2f; }
+.pc-buy-tag.consider { background:#f2f2f2; color:#555555; }
+.pc-buy-tag { display:none; }
+.empty-state { color:#666666; }
+
+.loved-banner { gap:16px; margin-bottom:22px; }
+.loved-card { min-height:150px; padding:18px; cursor:default; }
+.loved-card:hover { transform:none; }
+.loved-card.most-loved, .loved-card.least-loved { background:#ffffff !important; }
+.loved-card.most-loved { border-color:#e0e0e0 !important; }
+.loved-card.least-loved { border-color:#e0e0e0 !important; }
+.loved-badge { padding:0; margin-bottom:8px; background:transparent !important; font-size:14px; letter-spacing:0; text-transform:none; }
+.most-loved .loved-badge, .most-loved .loved-score { color:#1a9e3a; }
+.least-loved .loved-badge, .least-loved .loved-score { color:#d32f2f; }
+.loved-product-name { color:#161616; font-size:16px; margin-bottom:8px; }
+.loved-cat-badge, .loved-total { color:#777777; }
+.loved-score { display:inline; font-size:16px; }
+.loved-score-label { display:inline; margin-left:4px; color:inherit; font-size:14px; }
+.sug-products-title { font-size:21px; }
+.sug-filter-row { gap:8px; }
+.sug-filter-btn {
+  padding:7px 14px;
+  background:#ffffff;
+  border:1px solid #d5d5d5;
+  border-radius:18px;
+  color:#333333;
+}
+.sug-filter-btn:hover { background:#ffffff; border-color:#888888; color:#161616; }
+#sf-positive.active { border-color:#1a9e3a; color:#1a9e3a; background:#ffffff; }
+#sf-negative.active { border-color:#d32f2f; color:#d32f2f; background:#ffffff; }
+#sf-all.active { border-color:#333333; color:#161616; background:#ffffff; }
+
+.sug-cards-grid { grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:14px; }
+.sug-pc-card {
+  min-width:0;
+  padding:12px;
+  border:1px solid #e0e0e0 !important;
+  border-radius:8px !important;
+  cursor:pointer;
+  animation:none;
+}
+.sug-pc-card:hover { border-color:#c8c8c8 !important; transform:none; }
+.sug-pc-top { min-height:38px; margin-bottom:8px; }
+.sug-pc-name { font-size:15px; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sug-pc-verdict { display:none; }
+.sug-pc-product-image {
+  display:block;
+  width:100%;
+  height:180px;
+  object-fit:contain;
+  background:#ffffff;
+  border-radius:4px;
+  margin:0 auto 10px;
+}
+.sug-pc-price { color:#161616; font-size:18px; font-weight:700; margin-bottom:6px; }
+.sug-pc-rating {
+  display:inline-block;
+  padding:3px 7px;
+  background:#e8f5e9;
+  color:#1a9e3a;
+  border-radius:4px;
+  font-size:11px;
+  font-weight:600;
+}
+.sug-pc-rating.rating-orange { background:#fff3e0; color:#f57c00; }
+.sug-pc-rating.rating-red { background:#ffebee; color:#d32f2f; }
+.sug-pc-demo-count { color:#777777; font-size:11px; margin:7px 0; }
+.sug-pc-verdict-text { color:#161616; font-size:12px; margin-bottom:8px; }
+.sug-pc-bars { margin-bottom:7px; }
+.sug-pc-bar-row { display:none; }
+.sug-pc-bar-track { width:100%; height:4px; }
+.sug-pc-bar-fill { border-radius:0; }
+.sug-pc-footer { border:0; padding:0; }
+.sug-pc-reviews, .sug-pc-click { display:none; }
+.sug-pc-bestseller {
+  display:inline-block;
+  padding:2px 6px;
+  background:#eeeeee;
+  color:#555555;
+  border-radius:3px;
+  font-size:10px;
+  margin:0 0 6px 6px;
+}
+.search-result-state { padding:18px; }
+.sr-header { margin-bottom:18px; }
+.modal-box { max-height:82vh; }
+.modal-comment { background:#ffffff !important; }
+.modal-product-name, .mc-text { color:#161616; }
+.mc-user { color:#333333; }
+.modal-close { background:#ffffff; color:#333333; border-color:#e0e0e0; }
+#comments-modal, #suggest-modal { background:rgba(0,0,0,.45); backdrop-filter:none; }
+#toast-area .toast { background:#ffffff; color:#161616; box-shadow:0 1px 3px rgba(0,0,0,.1) !important; }
+.site-footer {
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 16px;
+  background:#000000;
+  color:#ffffff;
+  font-size:12px;
+  text-align:center;
+}
+
+@media (max-width:900px) {
+  .topbar, .mode-topbar {
+    grid-template-columns:auto minmax(160px, 1fr) auto;
+    gap:10px;
+    padding:0 12px;
+  }
+  .main-grid { grid-template-columns:200px minmax(0, 1fr); }
+  .right-sb { display:none; }
+  .suggest-layout { grid-template-columns:210px minmax(0, 1fr); }
+  .center-panel, .suggest-main { padding:16px; }
+}
+@media (max-width:620px) {
+  .topbar, .mode-topbar {
+    height:auto;
+    min-height:64px;
+    grid-template-columns:1fr auto;
+    padding:10px 12px;
+  }
+  .header-search { grid-column:1 / -1; grid-row:2; }
+  .top-tagline, .mode-tagline { display:none; }
+  .top-right { grid-column:2; grid-row:1; }
+  .main-grid, .suggest-layout { display:flex; flex-direction:column; }
+  .left-sb, .suggest-left { border-right:0; border-bottom:1px solid #e0e0e0; }
+  .left-sb { padding:12px; }
+  .left-sb #left-cats-container, .suggest-cat-list #suggest-left-cats {
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+  .center-panel, .suggest-main { padding:14px; }
+  .loved-banner { grid-template-columns:1fr; }
+  .sug-products-header { align-items:flex-start; flex-direction:column; gap:10px; }
+  .sug-cards-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px; }
+  .sug-pc-card { padding:9px; }
+  .sug-pc-product-image { height:130px; }
+  .header-user { display:none; }
+  .site-footer { font-size:10px; }
+}
+</style>
+</head>
+<body>
+
+<div id="toast-area"></div>
+
+<!-- ═══════════════════════════════════════════════
+     AUTH PAGE
+═══════════════════════════════════════════════ -->
+<div id="auth-page">
+  <div class="auth-wrap">
+    <div class="auth-brand">
+      <div class="brand-name">RateKaro</div>
+      <div class="brand-tag">Honest Reviews. Real People.</div>
+    </div>
+
+    <div class="auth-card">
+      <div class="tab-bar">
+        <button class="tab-btn on" id="tab-login" onclick="switchTab('login')">Sign In</button>
+        <button class="tab-btn" id="tab-reg" onclick="switchTab('reg')">Create Account</button>
+      </div>
+
+      <div id="auth-err" class="err-msg"></div>
+
+      <!-- LOGIN -->
+      <div id="login-form">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="l-email" class="form-input" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="l-pass" class="form-input" placeholder="••••••••">
+        </div>
+        <button class="btn-main" onclick="doLogin()" id="login-btn">
+          Sign In →
+        </button>
+        <p style="text-align:center;font-size:12px;color:var(--text3);margin-top:14px;">
+          New here? <span style="color:var(--accent);cursor:pointer;" onclick="switchTab('reg')">Create a free account</span>
+        </p>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="reg-form" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="r-name" class="form-input" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="r-email" class="form-input" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="r-pass" class="form-input" placeholder="Minimum 6 characters">
+        </div>
+        <button class="btn-main" onclick="doRegister()" id="reg-btn">
+          Create Account – Free!
+        </button>
+        <p style="text-align:center;font-size:12px;color:var(--text3);margin-top:14px;">
+          Already have an account? <span style="color:var(--accent);cursor:pointer;" onclick="switchTab('login')">Sign in</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mode selector page -->
+<div id="mode-page" style="display:none;flex-direction:column;">
+
+  <div class="mode-topbar">
+    <div class="header-brand">
+      <div class="mode-logo">RateKaro</div>
+      <div class="mode-tagline">Honest Reviews. Real People.</div>
+    </div>
+    <div class="header-search"><input type="search" placeholder="Search for products, brands and reviews..." onkeydown="submitHeaderSearch(event)"></div>
+    <div class="top-right"><span class="header-user">Arya</span><button class="btn-logout" onclick="doLogout()">Sign Out</button></div>
+  </div>
+
+  <div class="mode-body">
+    <div class="mode-greet" id="mode-greet">Hey there! What would you like to do?</div>
+    <div class="mode-sub">Choose how you would like to participate.</div>
+
+    <div class="mode-cards">
+
+      <!-- WRITE REVIEWS -->
+      <div class="mode-card review-card-mode" onclick="goToReviews()">
+        <div class="mode-card-title">Write Reviews</div>
+        <div class="mode-card-desc">
+          Share your honest experience with a product and help others make informed choices.
+        </div>
+        <button class="mode-card-btn">Start Reviewing →</button>
+      </div>
+
+      <!-- SUGGESTIONS -->
+      <div class="mode-card suggest-card-mode" onclick="goToSuggestions()">
+        <div class="mode-card-title">Suggestions</div>
+        <div class="mode-card-desc">
+          Not sure what to buy? Browse community suggestions, discover Most Loved products and avoid the Least Loved ones.
+        </div>
+        <button class="mode-card-btn">Explore Now →</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN APP PAGE (Review Mode)
+═══════════════════════════════════════════════ -->
+<div id="app-page">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="header-brand">
+      <div class="top-logo">RateKaro</div>
+      <div class="top-tagline">Honest Reviews. Real People.</div>
+    </div>
+    <div class="header-search"><input type="search" placeholder="Search for products, brands and reviews..." onkeydown="submitHeaderSearch(event)"></div>
+    <div class="top-right"><span class="header-user">Arya</span><button class="btn-logout" onclick="doLogout()">Sign Out</button></div>
+  </div>
+  <div class="mode-nav">
+    <div class="mode-switch">
+      <button class="ms-btn active-review" id="ms-review" onclick="goToReviews()">Write Reviews</button>
+      <button class="ms-btn" id="ms-suggest" onclick="goToSuggestions()">Suggestions</button>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- ═══ LEFT SIDEBAR ═══ -->
+    <div class="left-sb">
+      <div class="sb-section-title">Categories</div>
+      <div id="left-cats-container"></div>
+
+      <div class="sb-divider"></div>
+
+      <div class="vibe-box" id="vibe-box" style="display:none">
+        <div class="vibe-title">Category Insights</div>
+        <div class="vibe-stat">
+          <span class="vibe-label">Total Reviews</span>
+          <span class="vibe-val" id="vibe-total" style="color:var(--accent)">0</span>
+        </div>
+        <div class="vibe-stat">
+          <span class="vibe-label">Top Rated</span>
+          <span class="vibe-val" id="vibe-top" style="color:var(--pos)">-</span>
+        </div>
+        <div class="vibe-stat">
+          <span class="vibe-label">Lowest Rated</span>
+          <span class="vibe-val" id="vibe-bot" style="color:var(--neg)">-</span>
+        </div>
+      </div>
+
+      <div style="padding:0 12px;margin-top:10px;">
+        <div style="font-size:10px;color:var(--text3);line-height:1.6;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border);">
+          <strong style="color:var(--accent)">Tip:</strong> Write your review naturally and include details about your experience.
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CENTER PANEL ═══ -->
+    <div class="center-panel" id="center-panel">
+
+      <!-- Welcome State -->
+      <div class="welcome-state" id="welcome-state">
+        <div class="welcome-title">Which Product Would You Like to Review?</div>
+        <div class="welcome-sub">
+          Select a <strong style="color:var(--accent)">category from the left panel</strong> – mobiles, TVs, ACs, and more!
+          Then write your honest review and share your experience with the community.
+        </div>
+        <div class="welcome-arrows">
+          <span>Start by choosing a category</span>
+          <span style="opacity:.4">|</span>
+          <span>Free to use</span>
+        </div>
+      </div>
+
+      <!-- Active Review State -->
+      <div id="active-state" style="display:none">
+
+        <!-- Panel Header -->
+        <div class="panel-head" id="panel-head">
+          <div class="panel-title" id="panel-title">Mobiles</div>
+          <div class="panel-sub">
+            <span id="panel-sub-txt">Share your experience with a mobile you purchased.</span>
+            <span class="panel-badge" id="panel-badge">Community reviews</span>
+          </div>
+        </div>
+
+        <!-- Review Input Card -->
+        <div class="review-card">
+          <div class="review-card-label">
+            <span></span> Write Your Review
+          </div>
+
+          <div class="review-row" style="margin-bottom:12px;margin-top:0;">
+            <input
+              type="text"
+              class="product-inp"
+              id="product-name"
+              placeholder="Product name (e.g. Poco X6, Samsung S24, iPhone 15...)"
+            >
+            <button class="btn-analyze" id="analyze-btn" onclick="analyzeReview()">
+              Analyze Review
+            </button>
+          </div>
+
+          <textarea
+            class="review-textarea"
+            id="review-text"
+            placeholder="Share your honest opinion about this product. Be as detailed as you like."
+          ></textarea>
+
+          <div class="hint-tags" id="hint-tags"></div>
+        </div>
+
+        <!-- Result Card -->
+        <div class="result-wrap" id="result-wrap">
+          <div class="result-card">
+            <div class="result-glow" id="result-glow"></div>
+            <div class="result-top">
+              <div>
+                <div class="result-verdict" id="result-verdict">Analyzing…</div>
+                <div class="verdict-sub" id="result-sub">Review sentiment</div>
+              </div>
+              <div class="sentiment-pill" id="sentiment-pill">Positive</div>
+            </div>
+            <div class="score-bars">
+              <div class="score-row">
+                <div class="score-lbl">Positive</div>
+                <div class="score-track"><div class="score-fill pos" id="pos-fill"></div></div>
+                <div class="score-pct pos" id="pos-pct">0%</div>
+              </div>
+              <div class="score-row">
+                <div class="score-lbl">Negative</div>
+                <div class="score-track"><div class="score-fill neg" id="neg-fill"></div></div>
+                <div class="score-pct neg" id="neg-pct">0%</div>
+              </div>
+              <div class="score-row">
+                <div class="score-lbl">Neutral</div>
+                <div class="score-track"><div class="score-fill neu" id="neu-fill"></div></div>
+                <div class="score-pct neu" id="neu-pct">0%</div>
+              </div>
+            </div>
+            <div class="result-note" id="result-note">Review analysis will appear here.</div>
+          </div>
+        </div>
+
+        <!-- Reviews List -->
+        <div class="reviews-section">
+          <div class="section-hd">
+            <div class="section-title" id="reviews-title">Community Reviews</div>
+            <div class="section-count" id="reviews-count">0 reviews</div>
+          </div>
+          <div id="reviews-list">
+            <div class="empty-state">
+              No reviews yet. Be the first to review.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ RIGHT SIDEBAR ═══ -->
+    <div class="right-sb">
+      <div class="rsb-header">
+        <div class="rsb-title">What Should I Buy?</div>
+        <div class="rsb-sub">See the community's honest verdict</div>
+      </div>
+
+      <div class="suggest-grid" id="suggest-grid"></div>
+
+      <div id="suggest-products">
+        <div class="empty-state">
+          Select a category above to see what the community is saying!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PRODUCT COMMENTS MODAL ═══ -->
+  <div id="comments-modal" onclick="closeModalOutside(event)">
+    <div class="modal-box" id="modal-box">
+      <div class="modal-head">
+        <div class="modal-product-name" id="modal-product-name">Product Name</div>
+        <div class="modal-stats" id="modal-stats"></div>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-bars" id="modal-bars"></div>
+      <div class="modal-comments-title">All Reviews – Straight from the Community</div>
+      <div class="modal-comments-list" id="modal-comments-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SUGGESTIONS DASHBOARD PAGE
+═══════════════════════════════════════════════ -->
+<div id="suggest-page">
+
+  <!-- TOPBAR (same style) -->
+  <div class="topbar">
+    <div class="header-brand">
+      <div class="top-logo">RateKaro</div>
+      <div class="top-tagline">Honest Reviews. Real People.</div>
+    </div>
+    <div class="header-search"><input type="search" placeholder="Search for products, brands and reviews..." onkeydown="submitHeaderSearch(event)"></div>
+    <div class="top-right"><span class="header-user">Arya</span><button class="btn-logout" onclick="doLogout()">Sign Out</button></div>
+  </div>
+  <div class="mode-nav">
+    <div class="mode-switch">
+      <button class="ms-btn" id="sp-ms-review" onclick="goToReviews()">Write Reviews</button>
+      <button class="ms-btn active-suggest" id="sp-ms-suggest" onclick="goToSuggestions()">Suggestions</button>
+    </div>
+  </div>
+
+  <div class="suggest-layout">
+
+    <!-- LEFT SIDEBAR – categories -->
+    <div class="suggest-left">
+      <div class="suggest-left-head">
+        <div class="suggest-left-title">Find a Product</div>
+        <div style="font-size:11px;color:var(--text2);">Search or browse by category</div>
+      </div>
+
+      <!-- Search bar with recommendations -->
+      <div class="suggest-search-wrap">
+        <input
+          type="text"
+          class="suggest-search-input"
+          id="suggest-search"
+          placeholder="Search any product…"
+          oninput="handleSuggestSearch(this.value)"
+          onblur="hideSearchRecs()"
+          onfocus="handleSuggestSearch(this.value)"
+          autocomplete="off"
+        >
+        <div class="suggest-search-icon">Search</div>
+        <div class="search-recs" id="search-recs"></div>
+      </div>
+
+      <!-- Category list -->
+      <div class="suggest-cat-list">
+        <div class="sb-section-title" style="padding-left:18px;">All Categories</div>
+        <div id="suggest-left-cats"></div>
+      </div>
+
+      <!-- Stats box -->
+      <div style="padding:14px 12px 0;">
+        <div class="suggest-stats-box">
+          <div style="font-size:10px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Dashboard Stats</div>
+          <div class="vibe-stat">
+            <span class="vibe-label">Total Products</span>
+            <span class="vibe-val" id="sp-total-products" style="color:var(--blue)">0</span>
+          </div>
+          <div class="vibe-stat">
+            <span class="vibe-label">Total Reviews</span>
+            <span class="vibe-val" id="sp-total-reviews" style="color:var(--accent)">0</span>
+          </div>
+          <div class="vibe-stat">
+            <span class="vibe-label">Categories</span>
+            <span class="vibe-val" id="sp-total-cats" style="color:var(--accent2)">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="suggest-main" id="suggest-main">
+
+      <!-- Welcome State (no category selected) -->
+      <div class="sug-welcome" id="sug-welcome">
+        <div class="welcome-title" style="margin-bottom:10px;">What's on Your Shopping List?</div>
+        <div class="welcome-sub">
+          Search for any product or <strong style="color:var(--blue)">pick a category</strong> from the left to explore community suggestions.<br><br>
+          <em style="color:var(--text3)">No fluff, no ads – just honest community insights.</em>
+        </div>
+        <div class="welcome-arrows" style="margin-top:24px;">
+          <span>Browse categories</span>
+          <span style="opacity:.4">|</span>
+          <span>Or search above</span>
+        </div>
+      </div>
+
+      <!-- Search Results State -->
+      <div id="search-result-area" style="display:none;animation:fadeSlide .35s ease;">
+        <div class="search-result-state">
+          <div class="sr-header">
+            <div>
+              <div class="sr-query" id="sr-query-text">Search results</div>
+              <div class="sr-count" id="sr-count-text">0 products found</div>
+            </div>
+            <button class="sr-clear" onclick="clearSearch()">Clear</button>
+          </div>
+          <div class="sug-cards-grid" id="search-results-grid"></div>
+        </div>
+      </div>
+
+      <!-- Category View -->
+      <div id="sug-cat-view" style="display:none;animation:fadeSlide .35s ease;">
+
+        <!-- Most Loved / Least Loved Banner -->
+        <div class="loved-banner" id="loved-banner"></div>
+
+        <!-- Products Grid -->
+        <div class="sug-products-header">
+          <div class="sug-products-title" id="sug-cat-title">All Products</div>
+          <div class="sug-filter-row">
+            <button class="sug-filter-btn active" id="sf-all" onclick="setSugFilter('all')">All</button>
+            <button class="sug-filter-btn" id="sf-positive" onclick="setSugFilter('positive')">Loved</button>
+            <button class="sug-filter-btn" id="sf-negative" onclick="setSugFilter('negative')">Avoid</button>
+          </div>
+        </div>
+
+        <div class="sug-cards-grid" id="sug-cat-grid"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Reuse same modal -->
+  <div id="suggest-modal" onclick="closeSugModalOutside(event)">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-product-name" id="sug-modal-product-name">Product Name</div>
+        <div class="modal-stats" id="sug-modal-stats"></div>
+        <button class="modal-close" onclick="closeSugModal()">×</button>
+      </div>
+      <div class="modal-bars" id="sug-modal-bars"></div>
+      <div class="modal-comments-title">All Reviews – Straight from the Community</div>
+      <div class="modal-comments-list" id="sug-modal-comments-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">© 2026 RateKaro - Honest Reviews. Real People. | About | Contact | Privacy Policy</footer>
+
+<script type="module">
+import { products } from './data.js';
+
+const PRODUCT_CATALOG = products;
+
+// ──────────────────────────────────────────────────────────
+//  CATEGORIES CONFIG
+// ──────────────────────────────────────────────────────────
+const CATS = [
+  {
+    id:'mobiles', label:'Mobiles',
+    sub:'Did it live up to the hype?',
+    badge:'Most Reviewed',
+    hints:[
+      'Absolutely love this phone! Battery life is outstanding.',
+      'Very disappointing. Quality did not match the price.',
+      'Camera is average for this price range.',
+      'Excellent for gaming – smooth and lag-free.',
+      'Great value for money overall.'
+    ],
+    placeholder:'Poco X6, Samsung S24, iPhone 15...'
+  },
+  {
+    id:'televisions', label:'TV & Smart TV',
+    sub:'How is the picture and smart experience?',
+    badge:'Hot Category',
+    hints:[
+      'Picture quality is absolutely stunning!',
+      'Remote feels cheap and battery drains fast.',
+      'Looks great in 4K – Netflix experience is immersive.'
+    ],
+    placeholder:'Samsung 55" 4K, LG OLED, Mi TV...'
+  },
+  {
+    id:'washing_machine', label:'Washing Machine',
+    sub:'Does it get the job done efficiently?',
+    badge:'Home Essential',
+    hints:[
+      'Clothes come out remarkably clean every time!',
+      'Way too noisy – disrupts sleep during night cycles.',
+      'Regret getting top load. Front load would have been better.'
+    ],
+    placeholder:'LG 8kg, Whirlpool 7.5kg, Samsung...'
+  },
+  {
+    id:'laptops', label:'Laptops',
+    sub:'Is it a workhorse or a paperweight?',
+    badge:'Work From Home',
+    hints:[
+      'Perfect for college – handles everything with ease!',
+      'Battery lasts barely 2 hours. Very disappointing.',
+      'Gaming performance is solid – no lag at all!'
+    ],
+    placeholder:'MacBook Air M2, Dell XPS, HP Pavilion...'
+  },
+  {
+    id:'refrigerators', label:'Fridge',
+    sub:'Energy efficient and keeping things cool?',
+    badge:'Kitchen Essential',
+    hints:[
+      'No significant change in electricity bill – 5 star rating is accurate.',
+      'Door feels stiff and hard to open smoothly.'
+    ],
+    placeholder:'Samsung 253L, Haier 320L, LG...'
+  },
+  {
+    id:'ac', label:'AC',
+    sub:'Beating the heat effectively?',
+    badge:'Summer Must Have',
+    hints:[
+      'Room cools down very quickly – excellent performance!',
+      'Service team was unhelpful and rude.',
+      'Electricity bill has gone up noticeably this month.'
+    ],
+    placeholder:'Voltas 1.5 Ton, Daikin, Blue Star...'
+  },
+  {
+    id:'headphones', label:'Headphones',
+    sub:'How is the audio and call quality?',
+    badge:'Audio Experience',
+    hints:[
+      'ANC on these is absolutely incredible!',
+      'Call quality is mediocre at best.',
+      'In-ear fit causes discomfort during long sessions.'
+    ],
+    placeholder:'Sony WH-1000XM5, Boat Rockerz, JBL...'
+  },
+  {
+    id:'cameras', label:'Cameras',
+    sub:'Capturing moments with precision?',
+    badge:'Content Creator',
+    hints:[
+      'Perfect for shooting reels – excellent video quality!',
+      'Autofocus is frustratingly slow.',
+      'Night photography produces too much noise.'
+    ],
+    placeholder:'Canon EOS, Sony Alpha, GoPro...'
+  },
+].filter(category => products.some(product => product.category === category.id));
+
+// ──────────────────────────────────────────────────────────
+//  VERDICT MESSAGES
+// ──────────────────────────────────────────────────────────
+const VERDICTS = {
+  positive: [
+    'is an Outstanding Product!',
+    '– Great Value for Money!',
+    'is Highly Recommended!',
+    'is Worth Every Penny!',
+    'has Community Approval!'
+  ],
+  negative: [
+    'is a Major Disappointment!',
+    '– Not Worth Your Money!',
+    'is a Complete Flop – Skip It!',
+    'is Not Recommended at All!',
+    'is a Poor Purchase Decision!'
+  ],
+  neutral: [
+    'is Average – No Wow Factor.',
+    '– Decent Product, Choose Carefully.',
+    'Fits Budget but Has Better Alternatives.',
+    'is Neither Great nor Bad – Okay.',
+    '– Mixed Signals, Think Twice!'
+  ]
+};
+
+const VERDICT_NOTES = {
+  positive: ['The community sentiment is strongly positive!', 'A well-liked choice among reviewers.', 'Many reviewers recommend this product.'],
+  negative: ['Reviewers recommend looking at alternatives.', 'Community feedback raises concerns.', 'Compare alternatives before buying.'],
+  neutral:  ['Mixed community feedback on this one.', 'Average rating – make your own call!', 'Decent option but better alternatives exist.']
+};
+
+// ──────────────────────────────────────────────────────────
+//  STORAGE HELPERS
+// ──────────────────────────────────────────────────────────
+const getUsers   = () => { try { return JSON.parse(localStorage.getItem('rk_users')  || '[]'); } catch(e){return[];} };
+const saveUsers  = u => localStorage.setItem('rk_users', JSON.stringify(u));
+const getRevs    = () => { try { return JSON.parse(localStorage.getItem('rk_reviews') || '[]'); } catch(e){return[];} };
+const saveRevs   = r => localStorage.setItem('rk_reviews', JSON.stringify(r));
+const getSess    = ()  => localStorage.getItem('rk_sess');
+const setSess    = e   => localStorage.setItem('rk_sess', e);
+const clearSess  = ()  => localStorage.removeItem('rk_sess');
+
+function seedDemoReviews() {
+  const savedReviews = getRevs();
+  const userReviews = savedReviews.filter(review => !review.isDemo);
+
+  const demoReviews = PRODUCT_CATALOG.flatMap(item =>
+    item.reviews.map((review, index) => {
+      const loved = review.sentiment === 'Loved';
+      const parsedTimestamp = new Date(`${review.date} 12:00:00 GMT+0530`).getTime();
+      return {
+        id: `demo-${item.id}-${index + 1}`,
+        productId: item.id,
+        category: item.category,
+        productName: item.name,
+        reviewText: review.reviewText,
+        rating: review.rating,
+        sentiment: loved ? 'positive' : 'negative',
+        positiveScore: loved ? 100 : 0,
+        negativeScore: loved ? 0 : 100,
+        neutralScore: 0,
+        briefNote: `Pros: ${review.pros}. Cons: ${review.cons}.`,
+        userName: review.userName,
+        userEmail: '',
+        timestamp: Number.isNaN(parsedTimestamp) ? Date.now() : parsedTimestamp,
+        isDemo: true,
+        pros: review.pros,
+        cons: review.cons,
+      };
+    })
+  );
+
+  saveRevs([...demoReviews, ...userReviews]);
+}
+
+seedDemoReviews();
+
+// ──────────────────────────────────────────────────────────
+//  STATE
+// ──────────────────────────────────────────────────────────
+let currentUser   = null;
+let activeCat     = null;
+let suggestCat    = null;
+let currentMode   = 'mode'; // 'mode' | 'review' | 'suggest'
+let sugFilter     = 'all';
+let activeSuggestCat = null;
+
+// ──────────────────────────────────────────────────────────
+//  TOAST
+// ──────────────────────────────────────────────────────────
+function toast(msg, type='success') {
+  const area = document.getElementById('toast-area');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<span>${type==='success'?'Success':'Notice'}</span><span>${msg}</span>`;
+  area.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// ──────────────────────────────────────────────────────────
+//  AUTH
+// ──────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.getElementById('tab-login').className = 'tab-btn ' + (tab==='login'?'on':'');
+  document.getElementById('tab-reg').className   = 'tab-btn ' + (tab==='reg'  ?'on':'');
+  document.getElementById('login-form').style.display = tab==='login'?'block':'none';
+  document.getElementById('reg-form').style.display   = tab==='reg'  ?'block':'none';
+  document.getElementById('auth-err').style.display   = 'none';
+}
+
+function showErr(msg) {
+  const el = document.getElementById('auth-err');
+  el.textContent = msg; el.style.display='block';
+  setTimeout(()=>el.style.display='none', 4000);
+}
+
+function doLogin() {
+  const email = document.getElementById('l-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('l-pass').value;
+  if(!email||!pass) return showErr('Please enter your email address and password.');
+  const users = getUsers();
+  const u = users.find(x => x.email===email && x.password===pass);
+  if(!u) return showErr('Incorrect email or password. Please try again.');
+  setSess(email);
+  initApp(u);
+  toast(`Welcome back, ${u.name}.`);
+}
+
+function doRegister() {
+  const name  = document.getElementById('r-name').value.trim();
+  const email = document.getElementById('r-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('r-pass').value;
+  if(!name||!email||!pass) return showErr('Please fill in all fields to continue.');
+  if(pass.length < 6) return showErr('Password must be at least 6 characters long.');
+  const users = getUsers();
+  if(users.find(x=>x.email===email)) return showErr('This email is already registered. Please sign in.');
+  const u = {name, email, password:pass, joinedAt: Date.now()};
+  users.push(u); saveUsers(users);
+  setSess(email);
+  initApp(u);
+  toast(`Welcome to RateKaro, ${name}. Let's get started.`);
+}
+
+function doLogout() {
+  clearSess();
+  currentUser=null; activeCat=null; suggestCat=null; activeSuggestCat=null;
+  showPage('auth');
+  toast('You have been signed out. See you soon.', 'success');
+}
+
+// ──────────────────────────────────────────────────────────
+//  PAGE NAVIGATION
+// ──────────────────────────────────────────────────────────
+function showPage(page) {
+  document.getElementById('auth-page').style.display   = page==='auth'    ? 'flex'  : 'none';
+  document.getElementById('mode-page').style.display   = page==='mode'    ? 'flex'  : 'none';
+  document.getElementById('app-page').style.display    = page==='review'  ? 'flex'  : 'none';
+  document.getElementById('suggest-page').style.display= page==='suggest' ? 'flex'  : 'none';
+  currentMode = page;
+}
+
+function goToReviews() {
+  showPage('review');
+}
+
+function goToSuggestions() {
+  showPage('suggest');
+  renderSuggestLeftCats();
+  updateSuggestStats();
+}
+
+function goToModeSelector() {
+  showPage('mode');
+}
+
+// ──────────────────────────────────────────────────────────
+//  INIT APP
+// ──────────────────────────────────────────────────────────
+function initApp(user) {
+  currentUser = user;
+  document.getElementById('mode-greet').textContent   = `Hey ${user.name.split(' ')[0]}! What would you like to do?`;
+
+  renderLeftSidebar();
+  renderSuggestGrid();
+  showPage('mode');
+}
+
+// ──────────────────────────────────────────────────────────
+//  LEFT SIDEBAR (Review Mode)
+// ──────────────────────────────────────────────────────────
+function renderLeftSidebar() {
+  const revs = getRevs();
+  const container = document.getElementById('left-cats-container');
+  container.innerHTML = CATS.map(c => {
+    const count = revs.filter(r => r.category===c.id).length;
+    return `
+      <div class="cat-btn ${activeCat===c.id?'active':''}" onclick="selectCat('${c.id}')">
+        <div class="cat-info">
+          <div class="cat-name">${c.label}</div>
+          <div class="cat-sub">${c.sub}</div>
+        </div>
+        <div class="cat-count">${count||''}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectCat(catId) {
+  activeCat = catId;
+  const cat = CATS.find(c=>c.id===catId);
+  renderLeftSidebar();
+  updateVibeBox(catId);
+
+  document.getElementById('welcome-state').style.display='none';
+  document.getElementById('active-state').style.display='block';
+
+  document.getElementById('panel-title').textContent = cat.label;
+  document.getElementById('panel-sub-txt').textContent = cat.sub;
+  document.getElementById('panel-badge').textContent = cat.badge;
+
+  document.getElementById('review-text').value = '';
+  document.getElementById('review-text').placeholder =
+    `Share your honest thoughts on this ${cat.label.toLowerCase()}. Include what worked well and what could be better.`;
+  document.getElementById('product-name').value = '';
+  document.getElementById('product-name').placeholder = `Product name (e.g. ${cat.placeholder})`;
+
+  const tags = document.getElementById('hint-tags');
+  tags.innerHTML = (cat.hints||[]).map(h=>`<div class="hint-tag" onclick="fillHint(this)">${h.substring(0,50)}…</div>`).join('');
+
+  document.getElementById('result-wrap').classList.remove('show');
+
+  renderReviewsList(catId);
+}
+
+function fillHint(el) {
+  document.getElementById('review-text').value = el.textContent.replace('…','');
+}
+
+function updateVibeBox(catId) {
+  const revs = getRevs().filter(r=>r.category===catId);
+  const box = document.getElementById('vibe-box');
+  if(!revs.length) { box.style.display='none'; return; }
+  box.style.display='block';
+  document.getElementById('vibe-total').textContent = revs.length;
+
+  const prods = {};
+  revs.forEach(r => {
+    if(!prods[r.productName.toLowerCase()])
+      prods[r.productName.toLowerCase()] = {name:r.productName, pos:0, neg:0, total:0};
+    prods[r.productName.toLowerCase()].pos += r.positiveScore||0;
+    prods[r.productName.toLowerCase()].neg += r.negativeScore||0;
+    prods[r.productName.toLowerCase()].total++;
+  });
+  const sorted = Object.values(prods).sort((a,b)=>(b.pos/b.total)-(a.pos/a.total));
+  document.getElementById('vibe-top').textContent = sorted[0]?.name.substring(0,15)||'-';
+  document.getElementById('vibe-bot').textContent = sorted[sorted.length-1]?.name.substring(0,15)||'-';
+}
+
+// ──────────────────────────────────────────────────────────
+//  SENTIMENT ANALYSIS
+// ──────────────────────────────────────────────────────────
+async function analyzeReview() {
+  const reviewText  = document.getElementById('review-text').value.trim();
+  const productName = document.getElementById('product-name').value.trim();
+
+  if(!reviewText)  return toast('Please write your review before analyzing.', 'error');
+  if(!productName) return toast('Please enter the product name.', 'error');
+  if(!activeCat)   return toast('Please select a category first.', 'error');
+
+  const btn = document.getElementById('analyze-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>Analyzing…';
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 500,
+        messages:[{
+          role:'user',
+          content: `You are a professional product sentiment analysis engine. Analyze the following product review comprehensively.
+
+Instructions:
+- Read and understand the ENTIRE review as a whole, not just individual keywords
+- Consider the overall tone, context, and meaning of the full sentence(s)
+- Detect nuance: sarcasm, mixed feelings, conditionals, comparisons
+- A review may use informal or casual language – still interpret the full meaning accurately
+- Weigh all aspects mentioned: performance, price, quality, durability, support, etc.
+- Produce a balanced score that reflects the holistic sentiment of the entire review
+
+Respond ONLY with a raw JSON object (no markdown, no backticks, no explanation):
+{"sentiment":"positive"|"negative"|"neutral","positive_score":0-100,"negative_score":0-100,"neutral_score":0-100,"brief_note":"1 concise English sentence summarizing the key insight about this product from the review"}
+
+Rules:
+- The three scores must sum to exactly 100
+- "sentiment" must match whichever score is highest
+- "brief_note" must be in clear, professional English
+
+Product being reviewed: ${productName}
+Review text: "${reviewText}"`
+        }]
+      })
+    });
+    const data = await resp.json();
+    let text = (data.content?.[0]?.text || '').replace(/```json|```/g,'').trim();
+    const result = JSON.parse(text);
+    showResult(result, productName, reviewText);
+    saveReview(result, productName, reviewText);
+    renderReviewsList(activeCat);
+    renderLeftSidebar();
+    updateVibeBox(activeCat);
+    refreshSuggestProducts();
+    toast('Review saved and analyzed successfully.');
+  } catch(e) {
+    const result = keywordFallback(reviewText);
+    showResult(result, productName, reviewText);
+    saveReview(result, productName, reviewText);
+    renderReviewsList(activeCat);
+    renderLeftSidebar();
+    updateVibeBox(activeCat);
+    refreshSuggestProducts();
+    toast('Review saved. Offline analysis was used.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Analyze Review';
+  }
+}
+
+function keywordFallback(text) {
+  const t = text.toLowerCase();
+  const pos = [
+    'excellent','amazing','outstanding','fantastic','superb','wonderful','brilliant','perfect',
+    'great','good','best','love','awesome','exceptional','impressive','solid','reliable',
+    'recommend','worth','value','satisfied','happy','pleased','quality','durable','smooth',
+    'fast','powerful','efficient','beautiful','stunning','incredible','phenomenal','top notch',
+    'value for money','highly recommend','well built','good quality','performs well'
+  ];
+  const neg = [
+    'terrible','awful','horrible','worst','bad','poor','hate','disappointed','disappointing',
+    'waste','useless','broken','defective','cheap','fragile','slow','laggy','overpriced',
+    'regret','avoid','failure','failed','not worth','do not buy','do not recommend',
+    'pathetic','trash','garbage','junk','subpar','inferior','below average','fell apart',
+    'stopped working','customer service','return','refund'
+  ];
+  const negators = ['not','no','never','don\'t','doesn\'t','isn\'t','wasn\'t','without','lack','lacks'];
+  const words = t.match(/\b\w+\b/g) || [];
+  let p = 0, n = 0;
+  for(let i = 0; i < words.length; i++) {
+    const window3 = words.slice(Math.max(0,i-3), i).join(' ');
+    const negated = negators.some(neg => window3.includes(neg));
+    if(pos.some(pw => t.substring(Math.max(0,t.indexOf(words[i])-2)).startsWith(words[i]) && words[i]===pw.split(' ')[0] && t.includes(pw))) {
+      negated ? n++ : p++;
+    }
+    if(neg.some(nw => t.substring(Math.max(0,t.indexOf(words[i])-2)).startsWith(words[i]) && words[i]===nw.split(' ')[0] && t.includes(nw))) {
+      negated ? p++ : n++;
+    }
+  }
+  if(p===0 && n===0){
+    pos.forEach(w => { if(t.includes(w)) p++; });
+    neg.forEach(w => { if(t.includes(w)) n++; });
+  }
+  const total = p+n || 1;
+  const ps  = Math.round((p/total)*70 + 15);
+  const ns  = Math.round((n/total)*70 + 5);
+  const nus = Math.max(0, 100-ps-ns);
+  const sentiment = ps>ns&&ps>nus?'positive': ns>ps&&ns>nus?'negative':'neutral';
+  return {sentiment, positive_score:ps, negative_score:ns, neutral_score:nus, brief_note:'Analyzed using offline keyword detection.'};
+}
+
+// ──────────────────────────────────────────────────────────
+//  SHOW RESULT
+// ──────────────────────────────────────────────────────────
+function showResult(result, productName, reviewText) {
+  const wrap = document.getElementById('result-wrap');
+  wrap.classList.add('show');
+
+  const s = result.sentiment;
+  const verdicts = VERDICTS[s];
+  const verdict = verdicts[Math.floor(Math.random()*verdicts.length)];
+  const notes = VERDICT_NOTES[s];
+  const note = notes[Math.floor(Math.random()*notes.length)];
+
+  document.getElementById('result-verdict').textContent = `${productName} ${verdict}`;
+  document.getElementById('result-sub').textContent = note;
+
+  const pill = document.getElementById('sentiment-pill');
+  const labels = {positive:'Highly Positive!', negative:'Highly Negative!', neutral:'Mixed Sentiment'};
+  pill.className = `sentiment-pill ${s}`;
+  pill.textContent = labels[s];
+
+  const glow = document.getElementById('result-glow');
+  glow.className = `result-glow ${s}`;
+
+  setTimeout(() => {
+    setBar('pos', result.positive_score);
+    setBar('neg', result.negative_score);
+    setBar('neu', result.neutral_score);
+  }, 60);
+
+  document.getElementById('result-note').innerHTML =
+    `<strong style="color:var(--accent)">${productName}:</strong> ${result.brief_note}`;
+
+  wrap.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function setBar(id, val) {
+  document.getElementById(`${id}-fill`).style.width = val + '%';
+  document.getElementById(`${id}-pct`).textContent  = val + '%';
+}
+
+// ──────────────────────────────────────────────────────────
+//  SAVE REVIEW
+// ──────────────────────────────────────────────────────────
+function saveReview(result, productName, reviewText) {
+  const revs = getRevs();
+  revs.push({
+    id:           Date.now(),
+    category:     activeCat,
+    productName,
+    reviewText,
+    sentiment:    result.sentiment,
+    positiveScore: result.positive_score,
+    negativeScore: result.negative_score,
+    neutralScore:  result.neutral_score,
+    briefNote:    result.brief_note,
+    userName:     currentUser.name,
+    userEmail:    currentUser.email,
+    timestamp:    Date.now()
+  });
+  saveRevs(revs);
+}
+
+// ──────────────────────────────────────────────────────────
+//  RENDER REVIEWS LIST
+// ──────────────────────────────────────────────────────────
+function renderReviewsList(catId) {
+  const revs = getRevs().filter(r=>r.category===catId).reverse();
+  const title = document.getElementById('reviews-title');
+  const count = document.getElementById('reviews-count');
+  const list  = document.getElementById('reviews-list');
+
+  title.textContent = `${CATS.find(c=>c.id===catId)?.label} Reviews`;
+  count.textContent = `${revs.length} review${revs.length!==1?'s':''}`;
+
+  if(!revs.length) {
+    list.innerHTML = `<div class="empty-state">No reviews yet. Be the first to submit one.</div>`;
+    return;
+  }
+
+  const labels = {positive:'POSITIVE', negative:'NEGATIVE', neutral:'NEUTRAL'};
+  const since = ts => {
+    const diff = (Date.now()-ts)/1000;
+    if(diff<60)    return 'Just now';
+    if(diff<3600)  return `${Math.floor(diff/60)} min ago`;
+    if(diff<86400) return `${Math.floor(diff/3600)} hour${Math.floor(diff/3600)>1?'s':''} ago`;
+    return new Date(ts).toLocaleDateString('en-IN');
+  };
+
+  list.innerHTML = revs.slice(0,20).map(r => `
+    <div class="review-item">
+      <div class="ri-top">
+        <div class="ri-product">${r.productName}</div>
+        <span class="mini-pill ${r.sentiment}">${labels[r.sentiment]}</span>
+      </div>
+      <div class="ri-text">${r.reviewText.substring(0,220)}${r.reviewText.length>220?'…':''}</div>
+      <div class="ri-meta">
+        <span>${r.userName}</span>
+        <span>${since(r.timestamp)}</span>
+        ${r.rating ? `<span>Rating: ${r.rating}/5</span>` : ''}
+        <span>${r.positiveScore}% positive / ${r.negativeScore}% negative</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ──────────────────────────────────────────────────────────
+//  RIGHT SIDEBAR – SUGGESTIONS (Review Mode)
+// ──────────────────────────────────────────────────────────
+function renderSuggestGrid() {
+  const grid = document.getElementById('suggest-grid');
+  grid.innerHTML = CATS.map(c => `
+    <button class="sg-btn ${suggestCat===c.id?'on':''}" onclick="selectSuggestCat('${c.id}')">
+      <span class="sg-label">${c.label}</span>
+    </button>
+  `).join('');
+}
+
+function selectSuggestCat(catId) {
+  suggestCat = catId;
+  renderSuggestGrid();
+  refreshSuggestProducts();
+}
+
+function refreshSuggestProducts() {
+  if(!suggestCat) return;
+  const allRevs = getRevs().filter(r => r.category === suggestCat);
+  const list    = document.getElementById('suggest-products');
+
+  if(!allRevs.length) {
+    list.innerHTML = `<div class="empty-state">No reviews in this category yet. Be the first to submit one.</div>`;
+    return;
+  }
+
+  const prodMap = buildProdMap(allRevs);
+  const sorted = Object.values(prodMap).sort((a, b) => b.total - a.total).slice(0, 15);
+
+  const buyTags = {
+    positive: { cls:'recommended',     txt:'RECOMMENDED' },
+    negative: { cls:'not-recommended', txt:'NOT RECOMMENDED' },
+    neutral:  { cls:'consider',        txt:'CONSIDER CAREFULLY' }
+  };
+
+  list.innerHTML = sorted.map(p => {
+    const ap = Math.round(p.pos / p.total);
+    const an = Math.round(p.neg / p.total);
+    const au = Math.round(p.neu / p.total);
+    const dominant = ap >= an && ap >= au ? 'positive'
+                   : an >= ap && an >= au ? 'negative' : 'neutral';
+    const bt = buyTags[dominant];
+    const safeKey = p.displayName.replace(/'/g, "\\'");
+
+    return `
+      <div class="pc-card" onclick="openProductModal('${safeKey}', '${suggestCat}')" title="Click to view all reviews for this product">
+        <div class="pc-top">
+          <div class="pc-name">${p.displayName}</div>
+          <div class="pc-dominant ${dominant}"></div>
+        </div>
+        <div class="pc-bars">
+          <div class="pc-bar-row">
+            <div class="pc-bar-lbl" style="color:var(--pos)">+</div>
+            <div class="pc-bar-track"><div class="pc-bar-fill pos" style="width:${ap}%"></div></div>
+            <div class="pc-bar-pct">${ap}%</div>
+          </div>
+          <div class="pc-bar-row">
+            <div class="pc-bar-lbl" style="color:var(--neg)">-</div>
+            <div class="pc-bar-track"><div class="pc-bar-fill neg" style="width:${an}%"></div></div>
+            <div class="pc-bar-pct">${an}%</div>
+          </div>
+          <div class="pc-bar-row">
+            <div class="pc-bar-lbl" style="color:var(--neu)">~</div>
+            <div class="pc-bar-track"><div class="pc-bar-fill neu" style="width:${au}%"></div></div>
+            <div class="pc-bar-pct">${au}%</div>
+          </div>
+        </div>
+        <div class="pc-footer">
+          <div class="pc-count">${p.total} review${p.total > 1 ? 's' : ''}</div>
+          <div class="pc-buy-tag ${bt.cls}">${bt.txt}</div>
+        </div>
+        <div style="font-size:9px;color:var(--text3);margin-top:6px;text-align:center;letter-spacing:.3px;">
+          CLICK TO SEE ALL REVIEWS
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ──────────────────────────────────────────────────────────
+//  HELPER: build product map from reviews array
+// ──────────────────────────────────────────────────────────
+function buildProdMap(allRevs) {
+  const prodMap = {};
+  allRevs.forEach(r => {
+    const key = r.productName.toLowerCase().trim();
+    if(!prodMap[key]) {
+      prodMap[key] = {
+        displayName: r.productName,
+        category: r.category,
+        pos: 0, neg: 0, neu: 0,
+        total: 0,
+        reviews: []
+      };
+    }
+    prodMap[key].pos += (r.positiveScore || 0);
+    prodMap[key].neg += (r.negativeScore || 0);
+    prodMap[key].neu += (r.neutralScore  || 0);
+    prodMap[key].total++;
+    prodMap[key].reviews.push(r);
+  });
+  return prodMap;
+}
+
+// ──────────────────────────────────────────────────────────
+//  MODAL – review mode
+// ──────────────────────────────────────────────────────────
+function openProductModal(productName, catId) {
+  const allRevs = getRevs().filter(r =>
+    r.category === catId &&
+    r.productName.toLowerCase().trim() === productName.toLowerCase().trim()
+  ).reverse();
+
+  if(!allRevs.length) return;
+
+  const totalPos = allRevs.reduce((s,r) => s + (r.positiveScore||0), 0);
+  const totalNeg = allRevs.reduce((s,r) => s + (r.negativeScore||0), 0);
+  const totalNeu = allRevs.reduce((s,r) => s + (r.neutralScore||0),  0);
+  const n   = allRevs.length;
+  const ap  = Math.round(totalPos / n);
+  const an  = Math.round(totalNeg / n);
+  const au  = Math.round(totalNeu / n);
+  const dominant = ap >= an && ap >= au ? 'positive'
+                 : an >= ap && an >= au ? 'negative' : 'neutral';
+
+  const buyLabel = {positive:'RECOMMENDED', negative:'NOT RECOMMENDED', neutral:'CONSIDER CAREFULLY'};
+  const since    = ts => {
+    const d = (Date.now() - ts) / 1000;
+    if(d < 60)    return 'Just now';
+    if(d < 3600)  return `${Math.floor(d/60)} min ago`;
+    if(d < 86400) return `${Math.floor(d/3600)} hr${Math.floor(d/3600)>1?'s':''} ago`;
+    return new Date(ts).toLocaleDateString('en-IN');
+  };
+
+  document.getElementById('modal-product-name').textContent = productName;
+
+  document.getElementById('modal-stats').innerHTML = `
+    <span class="modal-stat-pill pos">${ap}% Positive</span>
+    <span class="modal-stat-pill neg">${an}% Negative</span>
+    <span class="modal-stat-pill neu">${au}% Neutral</span>
+    <span style="font-size:10px;color:var(--text3);">${n} review${n>1?'s':''} · ${buyLabel[dominant]}</span>
+  `;
+
+  document.getElementById('modal-bars').innerHTML = `
+    <div class="modal-bar-row">
+      <div class="modal-bar-lbl">Positive</div>
+      <div class="modal-bar-track"><div class="modal-bar-fill pos" style="width:${ap}%"></div></div>
+      <div class="modal-bar-pct pos">${ap}%</div>
+    </div>
+    <div class="modal-bar-row">
+      <div class="modal-bar-lbl">Negative</div>
+      <div class="modal-bar-track"><div class="modal-bar-fill neg" style="width:${an}%"></div></div>
+      <div class="modal-bar-pct neg">${an}%</div>
+    </div>
+    <div class="modal-bar-row">
+      <div class="modal-bar-lbl">Neutral</div>
+      <div class="modal-bar-track"><div class="modal-bar-fill neu" style="width:${au}%"></div></div>
+      <div class="modal-bar-pct neu">${au}%</div>
+    </div>
+  `;
+
+  const pillCls = {positive:'pos', negative:'neg', neutral:'neu'};
+  const pillLbl = {positive:'POSITIVE', negative:'NEGATIVE', neutral:'NEUTRAL'};
+
+  document.getElementById('modal-comments-list').innerHTML = allRevs.map(r => `
+    <div class="modal-comment">
+      <div class="mc-top">
+        <div class="mc-user">${r.userName}</div>
+        <div class="mc-time">${since(r.timestamp)}</div>
+      </div>
+      <div class="mc-text">${r.reviewText}</div>
+      <div class="mc-scores">
+        <span class="mc-score ${pillCls[r.sentiment]}">${pillLbl[r.sentiment]}</span>
+        ${r.rating ? `<span class="mc-score neu">Rating: ${r.rating}/5</span>` : ''}
+        <span class="mc-score pos">+${r.positiveScore}% positive</span>
+        <span class="mc-score neg">-${r.negativeScore}% negative</span>
+        <span class="mc-score neu">~${r.neutralScore}% neutral</span>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('comments-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('comments-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if(e.target.id === 'comments-modal') closeModal();
+}
+
+// ──────────────────────────────────────────────────────────
+//  SUGGESTIONS DASHBOARD
+// ──────────────────────────────────────────────────────────
+function renderSuggestLeftCats() {
+  const revs = getRevs();
+  const container = document.getElementById('suggest-left-cats');
+  container.innerHTML = CATS.map(c => {
+    const count = revs.filter(r => r.category===c.id).length;
+    return `
+      <div class="scat-btn cat-btn ${activeSuggestCat===c.id?'active':''}" onclick="selectSuggestDashCat('${c.id}')">
+        <div class="cat-info">
+          <div class="cat-name">${c.label}</div>
+          <div class="cat-sub">${count} review${count!==1?'s':''}</div>
+        </div>
+        <div class="cat-count">${count||''}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateSuggestStats() {
+  const revs = getRevs();
+  const prodMap = buildProdMap(revs);
+  document.getElementById('sp-total-products').textContent = Object.keys(prodMap).length;
+  document.getElementById('sp-total-reviews').textContent  = revs.length;
+  const catsWithRevs = CATS.filter(c => revs.some(r => r.category===c.id)).length;
+  document.getElementById('sp-total-cats').textContent     = catsWithRevs;
+}
+
+function selectSuggestDashCat(catId) {
+  activeSuggestCat = catId;
+  sugFilter = 'all';
+  renderSuggestLeftCats();
+  updateSuggestStats();
+  clearSearchUI();
+  renderSuggestDashboard(catId);
+}
+
+function renderSuggestDashboard(catId) {
+  const cat = CATS.find(c=>c.id===catId);
+  const allRevs = getRevs();
+  const categoryRevs = allRevs.filter(r => r.category===catId);
+
+  document.getElementById('sug-welcome').style.display = 'none';
+  document.getElementById('search-result-area').style.display = 'none';
+  document.getElementById('sug-cat-view').style.display = 'block';
+
+  document.getElementById('sug-cat-title').textContent = cat.label;
+
+  const catalogProducts = PRODUCT_CATALOG.map(product => ({
+    ...product,
+    displayName: product.name,
+    avgPos: product.totalReviews ? Math.round(product.reviews.filter(review => review.sentiment === 'Loved').length / product.totalReviews * 100) : 0,
+    avgNeg: product.totalReviews ? Math.round(product.reviews.filter(review => review.sentiment === 'Avoid').length / product.totalReviews * 100) : 0,
+    total: product.totalReviews,
+  }));
+  const mostLoved = [...catalogProducts].sort(
+    (a,b) => b.avgPos - a.avgPos || b.verdictScore - a.verdictScore
+  )[0];
+  const leastLoved = catalogProducts.length > 1
+    ? [...catalogProducts]
+        .filter(product => product !== mostLoved)
+        .sort((a,b) => b.avgNeg - a.avgNeg || a.verdictScore - b.verdictScore)[0]
+    : mostLoved;
+
+  renderLovedBanner(mostLoved, leastLoved);
+
+  if(!categoryRevs.length) {
+    document.getElementById('sug-cat-grid').innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1;">
+        No products reviewed in this category yet. Switch to Write Reviews to add some!
+      </div>`;
+    return;
+  }
+
+  const prodMap = buildProdMap(categoryRevs);
+  const products = Object.values(prodMap).map(p => {
+    const ap = Math.round(p.pos / p.total);
+    const an = Math.round(p.neg / p.total);
+    const au = Math.round(p.neu / p.total);
+    const dominant = ap >= an && ap >= au ? 'positive'
+                   : an >= ap && an >= au ? 'negative' : 'neutral';
+    return {...p, avgPos:ap, avgNeg:an, avgNeu:au, dominant};
+  });
+
+  renderSugProductGrid(products, sugFilter);
+}
+
+function renderLovedBanner(mostLoved, leastLoved) {
+  const banner = document.getElementById('loved-banner');
+  const productDetails = product => `
+    <div class="loved-highlight-row">
+      <img class="loved-product-image" src="${product.image}" alt="${product.name}" loading="lazy">
+      <div class="loved-product-details">
+        <div class="loved-product-name">${product.name}</div>
+        <div class="loved-product-price">Rs.${product.price.toLocaleString('en-IN')}</div>
+        ${renderRatingBadge(product.rating)}
+      </div>
+    </div>`;
+
+  const mlHTML = mostLoved ? `
+    <div class="loved-card most-loved" onclick="openSugModal('${mostLoved.displayName.replace(/'/g,"\\'")}', '${mostLoved.category}')">
+      <div class="loved-badge">Most Loved</div>
+      ${productDetails(mostLoved)}
+      <div class="loved-score">${mostLoved.avgPos}%</div>
+      <div class="loved-score-label">Positive Score</div>
+      <div class="loved-total">${mostLoved.total} review${mostLoved.total!==1?'s':''} · Click to view</div>
+    </div>` : '';
+
+  const llHTML = leastLoved ? `
+    <div class="loved-card least-loved" onclick="openSugModal('${leastLoved.displayName.replace(/'/g,"\\'")}', '${leastLoved.category}')">
+      <div class="loved-badge">Least Loved</div>
+      ${productDetails(leastLoved)}
+      <div class="loved-score">${leastLoved.avgNeg}%</div>
+      <div class="loved-score-label">Negative Score</div>
+      <div class="loved-total">${leastLoved.total} review${leastLoved.total!==1?'s':''} · Click to view</div>
+    </div>` : '';
+
+  banner.innerHTML = mlHTML + llHTML;
+}
+
+function renderRatingBadge(rating) {
+  const className = rating >= 4 ? '' : rating >= 3 ? 'rating-orange' : 'rating-red';
+  const ratingText = rating.toFixed(2).replace(/0+$/, '').replace(/\.$/, '.0');
+  return `<span class="sug-pc-rating ${className}">${ratingText} ★</span>`;
+}
+
+function submitHeaderSearch(event) {
+  if(event.key !== 'Enter') return;
+  const query = event.currentTarget.value.trim();
+  if(!query) return;
+  const searchInput = document.getElementById('suggest-search');
+  if(searchInput) searchInput.value = query;
+  goToSuggestions();
+  performSearch(query);
+}
+
+function setSugFilter(f) {
+  sugFilter = f;
+  ['all','positive','negative'].forEach(id => {
+    const el = document.getElementById(`sf-${id}`);
+    if(el) el.className = `sug-filter-btn${f===id?' active':''}`;
+  });
+  if(activeSuggestCat) {
+    const allRevs = getRevs().filter(r => r.category===activeSuggestCat);
+    const prodMap = buildProdMap(allRevs);
+    const products = Object.values(prodMap).map(p => {
+      const ap = Math.round(p.pos / p.total);
+      const an = Math.round(p.neg / p.total);
+      const au = Math.round(p.neu / p.total);
+      const dominant = ap >= an && ap >= au ? 'positive'
+                     : an >= ap && an >= au ? 'negative' : 'neutral';
+      return {...p, avgPos:ap, avgNeg:an, avgNeu:au, dominant};
+    });
+    renderSugProductGrid(products, f);
+  }
+}
+
+function renderSugProductGrid(products, filter) {
+  const grid = document.getElementById('sug-cat-grid');
+  let filtered = products;
+  if(filter === 'positive') filtered = products.filter(p => p.avgPos >= 60);
+  if(filter === 'negative') filtered = products.filter(p => p.avgNeg >= 60);
+
+  if(!filtered.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">No products match this filter.</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(renderProductSuggestionCard).join('');
+}
+
+function renderProductSuggestionCard(item) {
+  const safeName = item.displayName.replace(/'/g, "\\'");
+  const catalogItem = PRODUCT_CATALOG.find(product =>
+    product.category === item.category &&
+    product.name.toLowerCase().trim() === item.displayName.toLowerCase().trim()
+  );
+  const rating = catalogItem?.rating;
+  const progressClass = item.avgPos > 50 ? 'pos' : item.avgNeg > 50 ? 'neg' : 'neu';
+  const progress = Math.max(item.avgPos, item.avgNeg);
+  const image = catalogItem
+    ? `<img class="sug-pc-product-image" src="${catalogItem.image}" alt="${catalogItem.name}" loading="lazy">`
+    : '<div class="sug-pc-product-image" aria-hidden="true"></div>';
+  const productInfo = catalogItem ? `
+    <div class="sug-pc-price">Rs.${catalogItem.price.toLocaleString('en-IN')}</div>
+    ${rating >= 4.5 ? '<span class="sug-pc-bestseller">Bestseller</span>' : ''}
+    ${renderRatingBadge(rating)}
+    <div class="sug-pc-demo-count">${catalogItem.totalReviews} demo reviews</div>
+    <div class="sug-pc-verdict-text">${catalogItem.verdictText}</div>
+  ` : `
+    <div class="sug-pc-demo-count">${item.total} reviews</div>
+    <div class="sug-pc-verdict-text">${item.avgPos}% Loved · ${item.avgNeg}% Avoid</div>
+  `;
+
+  return `
+    <div class="sug-pc-card sentiment-${item.dominant}" onclick="openSugModal('${safeName}', '${item.category}')">
+      <div class="sug-pc-top"><div class="sug-pc-name">${item.displayName}</div></div>
+      ${image}
+      ${productInfo}
+      <div class="sug-pc-bars">
+        <div class="sug-pc-bar-track">
+          <div class="sug-pc-bar-fill ${progressClass}" style="width:${progress}%"></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ──────────────────────────────────────────────────────────
+//  SUGGEST DASHBOARD SEARCH
+// ──────────────────────────────────────────────────────────
+let searchTimeout = null;
+
+function handleSuggestSearch(query) {
+  clearTimeout(searchTimeout);
+  if(!query.trim()) {
+    hideSearchRecs();
+    return;
+  }
+  searchTimeout = setTimeout(() => {
+    const q = query.toLowerCase().trim();
+    const revs = getRevs();
+    const prodMap = buildProdMap(revs);
+    const matches = Object.values(prodMap).filter(p =>
+      p.displayName.toLowerCase().includes(q)
+    ).slice(0, 8);
+
+    const recsEl = document.getElementById('search-recs');
+    if(!matches.length) {
+      recsEl.innerHTML = `<div class="search-rec-item" style="justify-content:center;color:var(--text3);font-size:12px;">No products found for "${query}"</div>`;
+      recsEl.classList.add('show');
+      return;
+    }
+
+    recsEl.innerHTML = matches.map(p => {
+      const ap = Math.round(p.pos / p.total);
+      const an = Math.round(p.neg / p.total);
+      const dominant = ap >= an ? 'pos' : 'neg';
+      const score = dominant==='pos' ? ap : an;
+      const cat = CATS.find(c=>c.id===p.category);
+      const safeKey = p.displayName.replace(/'/g, "\\'");
+      return `
+        <div class="search-rec-item" onmousedown="selectSearchResult('${safeKey}', '${p.category}')">
+          <span class="src-name">${p.displayName}</span>
+          <span class="src-cat">${cat?.label||''}</span>
+          <span class="src-sentiment ${dominant}">${score}% ${dominant==='pos'?'Positive':'Negative'}</span>
+        </div>
+      `;
+    }).join('');
+    recsEl.classList.add('show');
+  }, 200);
+}
+
+function selectSearchResult(productName, catId) {
+  document.getElementById('suggest-search').value = productName;
+  hideSearchRecs();
+  performSearch(productName);
+}
+
+function hideSearchRecs() {
+  setTimeout(() => {
+    document.getElementById('search-recs')?.classList.remove('show');
+  }, 150);
+}
+
+function performSearch(query) {
+  const q = query.toLowerCase().trim();
+  if(!q) { clearSearch(); return; }
+
+  const revs = getRevs();
+  const prodMap = buildProdMap(revs);
+  const matches = Object.values(prodMap).filter(p =>
+    p.displayName.toLowerCase().includes(q)
+  ).map(p => {
+    const ap = Math.round(p.pos / p.total);
+    const an = Math.round(p.neg / p.total);
+    const au = Math.round(p.neu / p.total);
+    const dominant = ap >= an && ap >= au ? 'positive'
+                   : an >= ap && an >= au ? 'negative' : 'neutral';
+    return {...p, avgPos:ap, avgNeg:an, avgNeu:au, dominant};
+  });
+
+  document.getElementById('sug-welcome').style.display = 'none';
+  document.getElementById('sug-cat-view').style.display = 'none';
+  document.getElementById('search-result-area').style.display = 'block';
+
+  document.getElementById('sr-query-text').textContent = `Results for "${query}"`;
+  document.getElementById('sr-count-text').textContent = `${matches.length} product${matches.length!==1?'s':''} found`;
+
+  const grid = document.getElementById('search-results-grid');
+  if(!matches.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">No products found. Try a different search term.</div>`;
+    return;
+  }
+
+  grid.innerHTML = matches.map(renderProductSuggestionCard).join('');
+}
+
+function clearSearch() {
+  document.getElementById('suggest-search').value = '';
+  hideSearchRecs();
+  clearSearchUI();
+}
+
+function clearSearchUI() {
+  document.getElementById('search-result-area').style.display = 'none';
+  if(activeSuggestCat) {
+    document.getElementById('sug-cat-view').style.display = 'block';
+  } else {
+    document.getElementById('sug-welcome').style.display = 'flex';
+  }
+}
+
+// Press Enter on search
+document.addEventListener('DOMContentLoaded', () => {
+  const si = document.getElementById('suggest-search');
+  if(si) {
+    si.addEventListener('keydown', e => {
+      if(e.key==='Enter') {
+        hideSearchRecs();
+        performSearch(si.value.trim());
+      }
+    });
+  }
+});
+
+// ──────────────────────────────────────────────────────────
+//  SUGGEST DASHBOARD MODAL
+// ──────────────────────────────────────────────────────────
+function openSugModal(productName, catId) {
+  const allRevs = getRevs().filter(r =>
+    r.category === catId &&
+    r.productName.toLowerCase().trim() === productName.toLowerCase().trim()
+  ).reverse();
+
+  if(!allRevs.length) return;
+
+  const n   = allRevs.length;
+  const ap  = Math.round(allRevs.reduce((s,r) => s + (r.positiveScore||0), 0) / n);
+  const an  = Math.round(allRevs.reduce((s,r) => s + (r.negativeScore||0), 0) / n);
+  const au  = Math.round(allRevs.reduce((s,r) => s + (r.neutralScore||0),  0) / n);
+  const dominant = ap >= an && ap >= au ? 'positive'
+                 : an >= ap && an >= au ? 'negative' : 'neutral';
+
+  const buyLabel = {positive:'RECOMMENDED', negative:'NOT RECOMMENDED', neutral:'CONSIDER CAREFULLY'};
+  const since    = ts => {
+    const d = (Date.now() - ts) / 1000;
+    if(d < 60)    return 'Just now';
+    if(d < 3600)  return `${Math.floor(d/60)} min ago`;
+    if(d < 86400) return `${Math.floor(d/3600)} hr${Math.floor(d/3600)>1?'s':''} ago`;
+    return new Date(ts).toLocaleDateString('en-IN');
+  };
+
+  document.getElementById('sug-modal-product-name').textContent = productName;
+  document.getElementById('sug-modal-stats').innerHTML = `
+    <span class="modal-stat-pill pos">${ap}% Positive</span>
+    <span class="modal-stat-pill neg">${an}% Negative</span>
+    <span class="modal-stat-pill neu">${au}% Neutral</span>
+    <span style="font-size:10px;color:var(--text3);">${n} review${n>1?'s':''} · ${buyLabel[dominant]}</span>
+  `;
+  document.getElementById('sug-modal-bars').innerHTML = `
+    <div class="modal-bar-row">
+      <div class="modal-bar-lbl">Positive</div>
+      <div class="modal-bar-track"><div class="modal-bar-fill pos" style="width:${ap}%"></div></div>
+      <div class="modal-bar-pct pos">${ap}%</div>
+    </div>
+    <div class="modal-bar-row">
+      <div class="modal-bar-lbl">Negative</div>
+      <div class="modal-bar-track"><div class="modal-bar-fill neg" style="width:${an}%"></div></div>
+      <div class="modal-bar-pct neg">${an}%</div>
+    </div>
+    <div class="modal-bar-row">
+      <div class="modal-bar-lbl">Neutral</div>
+      <div class="modal-bar-track"><div class="modal-bar-fill neu" style="width:${au}%"></div></div>
+      <div class="modal-bar-pct neu">${au}%</div>
+    </div>
+  `;
+
+  const pillCls = {positive:'pos', negative:'neg', neutral:'neu'};
+  const pillLbl = {positive:'POSITIVE', negative:'NEGATIVE', neutral:'NEUTRAL'};
+
+  document.getElementById('sug-modal-comments-list').innerHTML = allRevs.map(r => `
+    <div class="modal-comment">
+      <div class="mc-top">
+        <div class="mc-user">${r.userName}</div>
+        <div class="mc-time">${since(r.timestamp)}</div>
+      </div>
+      <div class="mc-text">${r.reviewText}</div>
+      <div class="mc-scores">
+        <span class="mc-score ${pillCls[r.sentiment]}">${pillLbl[r.sentiment]}</span>
+        ${r.rating ? `<span class="mc-score neu">Rating: ${r.rating}/5</span>` : ''}
+        <span class="mc-score pos">+${r.positiveScore}% positive</span>
+        <span class="mc-score neg">-${r.negativeScore}% negative</span>
+        <span class="mc-score neu">~${r.neutralScore}% neutral</span>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('suggest-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSugModal() {
+  document.getElementById('suggest-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function closeSugModalOutside(e) {
+  if(e.target.id === 'suggest-modal') closeSugModal();
+}
+
+// Add missing styles for suggest modal
+document.getElementById('suggest-modal').style.cssText =
+  'display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;';
+
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') { closeModal(); closeSugModal(); }
+});
+
+// Keep existing inline HTML event handlers working in this module script.
+Object.assign(window, {
+  switchTab,
+  doLogin,
+  doRegister,
+  doLogout,
+  goToReviews,
+  goToSuggestions,
+  analyzeReview,
+  closeModalOutside,
+  closeModal,
+  handleSuggestSearch,
+  clearSearch,
+  setSugFilter,
+  closeSugModalOutside,
+  closeSugModal,
+  selectCat,
+  fillHint,
+  selectSuggestCat,
+  openProductModal,
+  selectSuggestDashCat,
+  openSugModal,
+  selectSearchResult,
+  submitHeaderSearch,
+});
+
+// ──────────────────────────────────────────────────────────
+//  BOOT
+// ──────────────────────────────────────────────────────────
+(function boot() {
+  const email = getSess();
+  if(email) {
+    const u = getUsers().find(x=>x.email===email);
+    if(u) { initApp(u); return; }
+  }
+  document.getElementById('auth-page').style.display='flex';
+})();
+
+</script>
+</body>
+</html>
