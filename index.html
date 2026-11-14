@@ -4060,5 +4060,32 @@ document.getElementById('home-products').addEventListener('click', event => {
 })();
 
 </script>
+
+<!-- Firebase Start -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDCFUB0A-kUcbdc8FfLG8feiEekNuMf_58",
+    authDomain: "ratekaro-9ec2d.firebaseapp.com",
+    projectId: "ratekaro-9ec2d",
+    storageBucket: "ratekaro-9ec2d.firebasestorage.app",
+    messagingSenderId: "671444439376",
+    appId: "1:671444439376:web:4cac2a423117152e475c55",
+    measurementId: "G-JDSM0H1YRH"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  console.log("Firebase Connected - RateKaro");
+</script>
+<!-- Firebase End -->
+
+
+
+
+
+
+
+
 </body>
 </html>
