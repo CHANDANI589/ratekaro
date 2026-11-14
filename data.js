@@ -10,7 +10,7 @@ const review = (userName, date, sentiment, rating, reviewText, pros, cons) => ({
   cons,
 });
 
-const product = (id, name, brand, category, price, image, rating, verdictScore, reviews) => {
+const product = (id, name, brand, category, price, image, rating, verdictScore, reviews, reviewCountLabel) => {
   const lovedCount = reviews.filter((item) => item.sentiment === "Loved").length;
   const avoidCount = reviews.filter((item) => item.sentiment === "Avoid").length;
   const totalReviews = reviews.length;
@@ -39,6 +39,7 @@ const product = (id, name, brand, category, price, image, rating, verdictScore, 
     verdictText: `${verdictLabel} - ${verdictScore.toFixed(1)}/10`,
     verdictSummary: `${percentLoved}% sample reviewers liked it and ${percentAvoid}% avoided it; verdict score ${verdictScore.toFixed(1)}/10 hai.`,
     reviews,
+    reviewCountLabel: reviewCountLabel || `${totalReviews} reviews`,
   };
 };
 
@@ -67,6 +68,8 @@ const images = {
   canonCamera: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=80",
   nikonCamera: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=900&q=80",
   sonyCamera: "https://images.unsplash.com/photo-1516724562728-afc824a36e84?auto=format&fit=crop&w=900&q=80",
+  appleWatch: "https://images.unsplash.com/photo-1546868871-7041f2a55e12",
+  noiseWatch: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a",
 };
 
 export const products = [
@@ -229,4 +232,11 @@ export const products = [
     review("Sanjana Banerjee", "12 Nov 2026", "Loved", 5, "Compact body bag me easily aa jaati hai. USB se stream test kiya, setup simple tha; long recording se pehle battery plan karna padta hai.", "Compact, convenient USB streaming", "Battery life is limited for long recording."),
     review("Dev Ghosh", "13 Nov 2026", "Avoid", 2, "Camera me in-body stabilisation nahi hai, walking shots handheld me shaky hue. Tripod ya stabilised lens ke saath better result aaya.", "Good autofocus, creator-friendly screen", "Handheld walking footage is shaky without stabilisation."),
   ]),
+  // Smartwatches
+  product("apple-watch-series-9", "Apple Watch Series 9", "Apple", "smartwatch", 41999, images.appleWatch, 4.6, 8.8, [
+    review("Ira Bansal", "14 Nov 2026", "Loved", 5, "Display super smooth hai, battery 1.5 din chalti hai. Fitness ke liye best hai.", "Smooth display and useful fitness tracking", "Battery lasts about a day and a half."),
+  ], "890 reviews"),
+  product("noise-colorfit-pro-5", "Noise ColorFit Pro 5", "Noise", "smartwatch", 2999, images.noiseWatch, 4.3, 8.1, [
+    review("Ritesh Puri", "15 Nov 2026", "Loved", 5, "Is price me best value. Bluetooth calling accha hai, thoda bulky lagta hai.", "Good value and Bluetooth calling", "The watch feels a little bulky."),
+  ], "2.1k reviews"),
 ];

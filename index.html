@@ -1527,6 +1527,295 @@ body::before { display:none; }
   .header-user { display:none; }
   .site-footer { font-size:10px; }
 }
+
+/* ─── PRODUCT HOMEPAGE ─── */
+#mode-page {
+  background:#f6f8fc;
+  color:#182230;
+}
+
+.home-topbar {
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:grid;
+  grid-template-columns:auto minmax(220px, 560px) auto;
+  gap:28px;
+  width:100%;
+  min-height:76px;
+  height:auto;
+  padding:12px clamp(18px, 5vw, 72px);
+  background-color:#fff !important;
+  border-bottom:1px solid #e8edf4;
+  box-shadow:0 2px 12px rgba(28,52,84,.04);
+}
+
+.home-brand { text-decoration:none; }
+.home-topbar .mode-logo {
+  background:none !important;
+  color:#1769d2 !important;
+  -webkit-text-fill-color:#1769d2 !important;
+}
+.home-topbar .mode-tagline {
+  margin-top:0;
+  color:#68778b;
+  letter-spacing:0;
+}
+
+.home-search-wrap {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  min-height:44px;
+  padding:0 14px;
+  border:1px solid #dce4ef;
+  border-radius:12px;
+  background:#f7f9fc;
+  color:#738198;
+}
+.home-search-wrap:focus-within {
+  border-color:#3981e6;
+  box-shadow:0 0 0 3px rgba(57,129,230,.12);
+}
+.home-search-icon { font-size:22px; line-height:1; }
+.home-search {
+  width:100%;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#182230;
+  font:inherit;
+  font-size:14px;
+}
+.home-search::placeholder { color:#8290a3; }
+.home-account { display:flex; align-items:center; gap:12px; }
+.home-account .header-user { color:#44546a; font-size:13px; font-weight:600; }
+.home-suggestions-btn {
+  padding:7px 12px;
+  border:1px solid #dce4ef;
+  border-radius:8px;
+  background:#fff;
+  color:#1769d2;
+  font:inherit;
+  font-size:13px;
+  font-weight:650;
+  cursor:pointer;
+}
+.home-suggestions-btn:hover { background:#f2f7ff; }
+.home-account .btn-logout {
+  border-color:#dce4ef;
+  color:#53647a;
+}
+.home-account .btn-logout:hover { border-color:#1769d2; color:#1769d2; }
+
+.home-main {
+  width:min(1180px, 100%);
+  margin:0 auto;
+  padding:28px 28px 52px;
+}
+.home-hero {
+  padding:34px clamp(22px, 5vw, 54px);
+  border:1px solid #e0eaf8;
+  border-radius:22px;
+  background-color:#f1f7ff;
+}
+.home-eyebrow {
+  margin-bottom:8px;
+  color:#1769d2;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.5px;
+}
+.home-hero h1 {
+  max-width:650px;
+  color:#152238;
+  font-family:'Baloo 2', cursive;
+  font-size:clamp(28px, 4vw, 42px);
+  font-weight:800;
+  line-height:1.12;
+}
+.home-hero p:last-child {
+  max-width:620px;
+  margin-top:10px;
+  color:#617087;
+  font-size:14px;
+  line-height:1.65;
+}
+.home-catalog { padding-top:32px; }
+.home-section-heading {
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+}
+.home-section-heading h2 {
+  color:#182230;
+  font-size:21px;
+  font-weight:750;
+}
+.home-results-count { color:#758298; font-size:13px; }
+.home-category-filters {
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-bottom:20px;
+}
+.home-filter-btn {
+  min-height:38px;
+  padding:8px 17px;
+  border:1px solid #dce4ef;
+  border-radius:24px;
+  background:#fff;
+  color:#4f6077;
+  font:inherit;
+  font-size:13px;
+  font-weight:650;
+  cursor:pointer;
+  transition:background .18s, border-color .18s, color .18s, box-shadow .18s;
+}
+.home-filter-btn:hover { border-color:#8bb5ed; color:#1769d2; }
+.home-filter-btn.active {
+  border-color:#1769d2;
+  background:#1769d2;
+  color:#fff;
+  box-shadow:0 4px 10px rgba(23,105,210,.16);
+}
+.home-products-grid {
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:18px;
+}
+.home-product-card {
+  display:flex;
+  min-width:0;
+  flex-direction:column;
+  overflow:hidden;
+  border:1px solid #e4e9f1;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 4px 16px rgba(28,52,84,.045);
+  transition:transform .2s, box-shadow .2s, border-color .2s;
+}
+.home-product-card:hover {
+  transform:translateY(-3px);
+  border-color:#d0def0;
+  box-shadow:0 12px 26px rgba(28,52,84,.1);
+}
+.home-product-image-wrap {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:184px;
+  padding:16px;
+  background:#f8fafd;
+}
+.home-product-image {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+.home-product-content {
+  display:flex;
+  flex:1;
+  flex-direction:column;
+  padding:15px;
+}
+.home-product-name {
+  min-height:42px;
+  color:#182230;
+  font-size:15px;
+  font-weight:700;
+  line-height:1.4;
+}
+.home-rating-row {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:7px;
+  color:#65748a;
+  font-size:12px;
+}
+.home-stars { font-size:14px; letter-spacing:1px; white-space:nowrap; }
+.home-stars-muted { color:#d5dce6; }
+.home-rating-value { color:#34445a; font-weight:700; }
+.home-price {
+  margin-top:12px;
+  color:#182230;
+  font-size:19px;
+  font-weight:800;
+}
+.home-review-snippet {
+  display:-webkit-box;
+  min-height:40px;
+  overflow:hidden;
+  margin:9px 0 15px;
+  color:#68778b;
+  font-size:12px;
+  line-height:1.6;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+}
+.home-write-review {
+  width:100%;
+  min-height:40px;
+  margin-top:auto;
+  border:0;
+  border-radius:9px;
+  background:#1769d2;
+  color:#fff;
+  font:inherit;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .18s, transform .18s;
+}
+.home-write-review:hover { transform:translateY(-1px); background:#0f58b8; }
+.home-empty {
+  grid-column:1/-1;
+  padding:42px 18px;
+  border:1px dashed #cbd6e5;
+  border-radius:14px;
+  background:#fff;
+  color:#68778b;
+  text-align:center;
+}
+body[data-page="mode"] .site-footer {
+  border-top:1px solid #e8edf4;
+  background:#fff;
+  color:#68778b;
+}
+
+@media (max-width:1000px) {
+  .home-products-grid { grid-template-columns:repeat(3, minmax(0, 1fr)); }
+  .home-topbar { gap:16px; }
+}
+@media (max-width:720px) {
+  .home-topbar {
+    grid-template-columns:1fr auto;
+    gap:10px 14px;
+    padding:12px 16px;
+  }
+  .home-topbar .home-search-wrap { grid-column:1/-1; grid-row:2; }
+  .home-products-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; }
+  .home-main { padding:18px 16px 36px; }
+  .home-hero { padding:26px 22px; border-radius:17px; }
+  .home-product-image-wrap { height:150px; }
+}
+@media (max-width:460px) {
+  .home-products-grid { grid-template-columns:1fr; }
+  .home-product-card { display:grid; grid-template-columns:112px minmax(0, 1fr); }
+  .home-product-image-wrap { height:100%; min-height:170px; padding:10px; }
+  .home-product-content { padding:12px; }
+  .home-product-name { min-height:0; font-size:14px; }
+  .home-rating-row { flex-wrap:wrap; gap:4px; }
+  .home-price { margin-top:8px; font-size:17px; }
+  .home-review-snippet { min-height:38px; margin:7px 0 10px; font-size:11px; }
+  .home-write-review { min-height:36px; font-size:12px; }
+  .home-account .btn-logout { padding:7px 10px; }
+  .home-section-heading { align-items:flex-start; flex-direction:column; gap:4px; }
+}
 </style>
 </head>
 <body>
@@ -1596,43 +1885,44 @@ body::before { display:none; }
 
 <!-- Mode selector page -->
 <div id="mode-page" style="display:none;flex-direction:column;">
-
-  <div class="mode-topbar">
-    <div class="header-brand">
+  <header class="mode-topbar home-topbar">
+    <div class="home-brand" aria-label="RateKaro">
       <div class="mode-logo">RateKaro</div>
       <div class="mode-tagline">Honest Reviews. Real People.</div>
     </div>
-    <div class="header-search"><input type="search" placeholder="Search for products, brands and reviews..." onkeydown="submitHeaderSearch(event)"></div>
-    <div class="top-right"><span class="header-user">Arya</span><button class="btn-logout" onclick="doLogout()">Sign Out</button></div>
-  </div>
-
-  <div class="mode-body">
-    <div class="mode-greet" id="mode-greet">Hey there! What would you like to do?</div>
-    <div class="mode-sub">Choose how you would like to participate.</div>
-
-    <div class="mode-cards">
-
-      <!-- WRITE REVIEWS -->
-      <div class="mode-card review-card-mode" onclick="goToReviews()">
-        <div class="mode-card-title">Write Reviews</div>
-        <div class="mode-card-desc">
-          Share your honest experience with a product and help others make informed choices.
-        </div>
-        <button class="mode-card-btn">Start Reviewing →</button>
-      </div>
-
-      <!-- SUGGESTIONS -->
-      <div class="mode-card suggest-card-mode" onclick="goToSuggestions()">
-        <div class="mode-card-title">Suggestions</div>
-        <div class="mode-card-desc">
-          Not sure what to buy? Browse community suggestions, discover Most Loved products and avoid the Least Loved ones.
-        </div>
-        <button class="mode-card-btn">Explore Now →</button>
-      </div>
-
+    <label class="home-search-wrap" for="home-search">
+      <span class="home-search-icon" aria-hidden="true">⌕</span>
+      <input class="home-search" id="home-search" type="search" placeholder="Search iPhone, laptop, earbuds..." autocomplete="off">
+    </label>
+    <div class="home-account">
+      <span class="header-user" id="home-header-user">Arya</span>
+      <button class="home-suggestions-btn" type="button" onclick="goToSuggestions()">Suggestions</button>
+      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
     </div>
-  </div>
+  </header>
 
+  <main class="home-main">
+    <section class="home-hero">
+      <p class="home-eyebrow">REAL PEOPLE. HONEST OPINIONS.</p>
+      <h1>Find the right tech with reviews you can trust.</h1>
+      <p>Explore honest experiences from people who use these products every day.</p>
+    </section>
+
+    <section class="home-catalog" aria-labelledby="home-catalog-title">
+      <div class="home-section-heading">
+        <h2 id="home-catalog-title">Explore products</h2>
+        <span class="home-results-count" id="home-results-count" aria-live="polite"></span>
+      </div>
+      <div class="home-category-filters" id="home-category-filters" role="group" aria-label="Filter products by category">
+        <button class="home-filter-btn active" type="button" data-home-category="all" aria-pressed="true">All</button>
+        <button class="home-filter-btn" type="button" data-home-category="mobiles" aria-pressed="false">Phones</button>
+        <button class="home-filter-btn" type="button" data-home-category="laptops" aria-pressed="false">Laptops</button>
+        <button class="home-filter-btn" type="button" data-home-category="headphones" aria-pressed="false">Earbuds</button>
+        <button class="home-filter-btn" type="button" data-home-category="smartwatch" aria-pressed="false">Smartwatch</button>
+      </div>
+      <div class="home-products-grid" id="home-products" aria-live="polite"></div>
+    </section>
+  </main>
 </div>
 
 <!-- ═══════════════════════════════════════════════
@@ -1651,6 +1941,7 @@ body::before { display:none; }
   </div>
   <div class="mode-nav">
     <div class="mode-switch">
+      <button class="ms-btn" onclick="goToModeSelector()">Home</button>
       <button class="ms-btn active-review" id="ms-review" onclick="goToReviews()">Write Reviews</button>
       <button class="ms-btn" id="ms-suggest" onclick="goToSuggestions()">Suggestions</button>
     </div>
@@ -1841,6 +2132,7 @@ body::before { display:none; }
   </div>
   <div class="mode-nav">
     <div class="mode-switch">
+      <button class="ms-btn" onclick="goToModeSelector()">Home</button>
       <button class="ms-btn" id="sp-ms-review" onclick="goToReviews()">Write Reviews</button>
       <button class="ms-btn active-suggest" id="sp-ms-suggest" onclick="goToSuggestions()">Suggestions</button>
     </div>
@@ -1972,6 +2264,7 @@ body::before { display:none; }
 import { products } from './data.js';
 
 const PRODUCT_CATALOG = products;
+let activeHomeCategory = 'all';
 
 // ──────────────────────────────────────────────────────────
 //  CATEGORIES CONFIG
@@ -1989,6 +2282,17 @@ const CATS = [
       'Great value for money overall.'
     ],
     placeholder:'Poco X6, Samsung S24, iPhone 15...'
+  },
+  {
+    id:'smartwatch', label:'Smartwatch',
+    sub:'How does it fit into your daily routine?',
+    badge:'Wearable Tech',
+    hints:[
+      'Fitness tracking is useful and easy to check during the day.',
+      'Battery life could be better for regular use.',
+      'Bluetooth calling makes quick calls convenient.'
+    ],
+    placeholder:'Apple Watch, Noise ColorFit, Samsung Galaxy Watch...'
   },
   {
     id:'televisions', label:'TV & Smart TV',
@@ -2228,6 +2532,7 @@ function showPage(page) {
   document.getElementById('mode-page').style.display   = page==='mode'    ? 'flex'  : 'none';
   document.getElementById('app-page').style.display    = page==='review'  ? 'flex'  : 'none';
   document.getElementById('suggest-page').style.display= page==='suggest' ? 'flex'  : 'none';
+  document.body.dataset.page = page;
   currentMode = page;
 }
 
@@ -2250,11 +2555,100 @@ function goToModeSelector() {
 // ──────────────────────────────────────────────────────────
 function initApp(user) {
   currentUser = user;
-  document.getElementById('mode-greet').textContent   = `Hey ${user.name.split(' ')[0]}! What would you like to do?`;
+  document.getElementById('home-header-user').textContent = user.name;
 
   renderLeftSidebar();
   renderSuggestGrid();
+  renderHomeProducts();
   showPage('mode');
+}
+
+function renderHomeProducts() {
+  const query = document.getElementById('home-search').value.trim().toLowerCase();
+  const categoryKeywords = {
+    mobiles: 'phone phones mobile mobiles',
+    laptops: 'laptop laptops',
+    headphones: 'earbud earbuds headphone headphones audio',
+  };
+  const visibleProducts = PRODUCT_CATALOG.filter(product => {
+    const categoryMatches = activeHomeCategory === 'all' ||
+      product.category === activeHomeCategory;
+    const searchableText = `${product.name} ${product.brand} ${categoryKeywords[product.category] || product.category}`.toLowerCase();
+    return categoryMatches && searchableText.includes(query);
+  });
+
+  document.getElementById('home-results-count').textContent =
+    `${visibleProducts.length} product${visibleProducts.length === 1 ? '' : 's'} found`;
+
+  const grid = document.getElementById('home-products');
+  if (!visibleProducts.length) {
+    grid.innerHTML = '<div class="home-empty">No products found. Try another search or category.</div>';
+    return;
+  }
+
+  const currency = new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 0,
+  });
+
+  grid.innerHTML = visibleProducts.map(product => {
+    const rating = Number(product.rating) || 0;
+    const filledStars = Math.max(0, Math.min(5, Math.round(rating)));
+    const reviewCount = product.totalReviews || product.reviews.length;
+    const reviewCountLabel = product.reviewCountLabel || `${reviewCount} reviews`;
+    const snippet = product.reviews[0]?.reviewText || 'Be the first to share an honest review.';
+    return `
+      <article class="home-product-card">
+        <div class="home-product-image-wrap">
+          <img class="home-product-image" src="${product.image}" alt="${product.name}" loading="lazy">
+        </div>
+        <div class="home-product-content">
+          <h3 class="home-product-name">${product.name}</h3>
+          <div class="home-rating-row">
+            <span class="home-stars" aria-label="${rating.toFixed(1)} out of 5">
+              <span>${'★'.repeat(filledStars)}</span><span class="home-stars-muted">${'★'.repeat(5 - filledStars)}</span>
+            </span>
+            <span class="home-rating-value">${rating.toFixed(1)}</span>
+            <span>(${reviewCountLabel})</span>
+          </div>
+          <div class="home-price">${currency.format(product.price)}</div>
+          <p class="home-review-snippet">${snippet}</p>
+          <button class="home-write-review" type="button" data-review-product="${product.id}">
+            Write Review
+          </button>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function setHomeCategory(category) {
+  activeHomeCategory = category;
+  document.querySelectorAll('[data-home-category]').forEach(button => {
+    const isActive = button.dataset.homeCategory === category;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
+  renderHomeProducts();
+}
+
+function startReviewForProduct(productId) {
+  const product = PRODUCT_CATALOG.find(item => item.id === productId);
+  if (!product) {
+    toast('That product is unavailable. Please choose another one.', 'error');
+    return;
+  }
+  if (!CATS.some(category => category.id === product.category)) {
+    toast('Reviews are not available for this product category yet.', 'error');
+    return;
+  }
+
+  goToReviews();
+  selectCat(product.category);
+  const productInput = document.getElementById('product-name');
+  productInput.value = product.name;
+  productInput.focus();
 }
 
 // ──────────────────────────────────────────────────────────
@@ -3180,6 +3574,7 @@ Object.assign(window, {
   closeSugModalOutside,
   closeSugModal,
   selectCat,
+  goToModeSelector,
   fillHint,
   selectSuggestCat,
   openProductModal,
@@ -3187,6 +3582,16 @@ Object.assign(window, {
   openSugModal,
   selectSearchResult,
   submitHeaderSearch,
+});
+
+document.getElementById('home-search').addEventListener('input', renderHomeProducts);
+document.getElementById('home-category-filters').addEventListener('click', event => {
+  const button = event.target.closest('[data-home-category]');
+  if(button) setHomeCategory(button.dataset.homeCategory);
+});
+document.getElementById('home-products').addEventListener('click', event => {
+  const button = event.target.closest('[data-review-product]');
+  if(button) startReviewForProduct(button.dataset.reviewProduct);
 });
 
 // ──────────────────────────────────────────────────────────
