@@ -1166,9 +1166,9 @@ body::before {
   --text:#182230;
   --text2:#64748b;
   --text3:#64748b;
-  --pos:#2563EB;
-  --neg:#2563EB;
-  --neu:#64748b;
+  --pos:#22C55E;
+  --neg:#EF4444;
+  --neu:#F59E0B;
   --radius:8px;
 }
 
@@ -1830,9 +1830,9 @@ body[data-page="mode"] .site-footer {
   --text:#182230;
   --text2:#64748b;
   --text3:#64748b;
-  --pos:#2563EB;
-  --neg:#2563EB;
-  --neu:#64748b;
+  --pos:#22C55E;
+  --neg:#EF4444;
+  --neu:#F59E0B;
   --radius:16px;
 }
 
@@ -2071,27 +2071,47 @@ body::before { display:none !important; }
 .hint-tag { color:#475569; }
 .hint-tag:hover, .sg-btn.on { border-color:#2563EB; background:#eff6ff; color:#2563EB; }
 .result-note { border-left:3px solid #2563EB; color:#475569; }
-.score-fill.pos, .score-fill.neg, .score-fill.neu,
-.pc-bar-fill.pos, .pc-bar-fill.neg, .pc-bar-fill.neu,
-.sug-pc-bar-fill.pos, .sug-pc-bar-fill.neg, .sug-pc-bar-fill.neu,
-.modal-bar-fill.pos, .modal-bar-fill.neg, .modal-bar-fill.neu { background:#2563EB; }
+.score-fill.pos, .pc-bar-fill.pos, .sug-pc-bar-fill.pos, .modal-bar-fill.pos { background:#22C55E; }
+.score-fill.neg, .pc-bar-fill.neg, .sug-pc-bar-fill.neg, .modal-bar-fill.neg { background:#EF4444; }
+.score-fill.neu, .pc-bar-fill.neu, .sug-pc-bar-fill.neu, .modal-bar-fill.neu { background:#F59E0B; }
 .score-track, .pc-bar-track, .sug-pc-bar-track, .modal-bar-track { background:#e2e8f0; }
-.sentiment-pill.positive, .sentiment-pill.negative, .sentiment-pill.neutral,
-.mini-pill.positive, .mini-pill.negative, .mini-pill.neutral,
-.src-sentiment.pos, .src-sentiment.neg, .src-sentiment.neu,
-.modal-stat-pill.pos, .modal-stat-pill.neg, .modal-stat-pill.neu,
-.mc-score.pos, .mc-score.neg, .mc-score.neu,
-.sug-pc-verdict.pos, .sug-pc-verdict.neg, .sug-pc-verdict.neu {
-  border:1px solid #dbeafe;
-  background:#eff6ff;
-  color:#2563EB;
+.sentiment-pill.positive, .mini-pill.positive, .src-sentiment.pos,
+.modal-stat-pill.pos, .mc-score.pos, .sug-pc-verdict.pos,
+.pc-buy-tag.recommended {
+  border:1px solid #BBF7D0;
+  background:#DCFCE7;
+  color:#166534;
 }
-.pc-buy-tag.recommended, .pc-buy-tag.not-recommended, .pc-buy-tag.consider,
+.sentiment-pill.negative, .mini-pill.negative, .src-sentiment.neg,
+.modal-stat-pill.neg, .mc-score.neg, .sug-pc-verdict.neg,
+.pc-buy-tag.not-recommended {
+  border:1px solid #FECACA;
+  background:#FEE2E2;
+  color:#991B1B;
+}
+.sentiment-pill.neutral, .mini-pill.neutral, .src-sentiment.neu,
+.modal-stat-pill.neu, .mc-score.neu, .sug-pc-verdict.neu,
+.pc-buy-tag.consider {
+  border:1px solid #FDE68A;
+  background:#FEF3C7;
+  color:#92400E;
+}
 .sug-pc-rating, .sug-pc-rating.rating-mid, .sug-pc-rating.rating-low {
   border:1px solid #dbeafe;
   background:#eff6ff;
   color:#2563EB;
 }
+.mc-score.rating {
+  border:1px solid #dbeafe;
+  background:#eff6ff;
+  color:#2563EB;
+}
+.score-pct.pos, .modal-bar-pct.pos, .sug-pc-bar-pct.pos { color:#166534; }
+.score-pct.neg, .modal-bar-pct.neg, .sug-pc-bar-pct.neg { color:#991B1B; }
+.score-pct.neu, .modal-bar-pct.neu, .sug-pc-bar-pct.neu { color:#92400E; }
+.pc-dominant.positive { background:#22C55E; }
+.pc-dominant.negative { background:#EF4444; }
+.pc-dominant.neutral { background:#F59E0B; }
 .section-count { border-radius:20px; background:#eff6ff; color:#2563EB; }
 .review-item:hover, .modal-comment:hover { border-color:#bfdbfe !important; }
 
@@ -2100,8 +2120,8 @@ body::before { display:none !important; }
 .loved-card:hover { transform:none; }
 .loved-card.most-loved, .loved-card.least-loved { background:#ffffff !important; }
 .loved-card.most-loved, .loved-card.least-loved { border-color:#e2e8f0 !important; }
-.most-loved .loved-badge, .most-loved .loved-score,
-.least-loved .loved-badge, .least-loved .loved-score { color:#2563EB; }
+.most-loved .loved-badge, .most-loved .loved-score { color:#166534; }
+.least-loved .loved-badge, .least-loved .loved-score { color:#991B1B; }
 .loved-product-name { color:#182230; }
 .loved-cat-badge, .loved-total { color:#64748b; }
 .sug-products-header { color:#182230; }
@@ -3514,7 +3534,7 @@ function openProductModal(productName, catId) {
       <div class="mc-text">${r.reviewText}</div>
       <div class="mc-scores">
         <span class="mc-score ${pillCls[r.sentiment]}">${pillLbl[r.sentiment]}</span>
-        ${r.rating ? `<span class="mc-score neu">Rating: ${r.rating}/5</span>` : ''}
+        ${r.rating ? `<span class="mc-score rating">Rating: ${r.rating}/5</span>` : ''}
         <span class="mc-score pos">+${r.positiveScore}% positive</span>
         <span class="mc-score neg">-${r.negativeScore}% negative</span>
         <span class="mc-score neu">~${r.neutralScore}% neutral</span>
@@ -3926,7 +3946,7 @@ function openSugModal(productName, catId) {
       <div class="mc-text">${r.reviewText}</div>
       <div class="mc-scores">
         <span class="mc-score ${pillCls[r.sentiment]}">${pillLbl[r.sentiment]}</span>
-        ${r.rating ? `<span class="mc-score neu">Rating: ${r.rating}/5</span>` : ''}
+        ${r.rating ? `<span class="mc-score rating">Rating: ${r.rating}/5</span>` : ''}
         <span class="mc-score pos">+${r.positiveScore}% positive</span>
         <span class="mc-score neg">-${r.negativeScore}% negative</span>
         <span class="mc-score neu">~${r.neutralScore}% neutral</span>
