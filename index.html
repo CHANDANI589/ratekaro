@@ -1449,8 +1449,9 @@ body::before { display:none; }
   font-size:11px;
   font-weight:600;
 }
-.sug-pc-rating.rating-mid { background:#eff6ff; color:#2563EB; }
-.sug-pc-rating.rating-low { background:#eff6ff; color:#2563EB; }
+.sug-pc-rating.rating-high { background:#DCFCE7; color:#166534; }
+.sug-pc-rating.rating-mid { background:#FEF3C7; color:#92400E; }
+.sug-pc-rating.rating-low { background:#FEE2E2; color:#991B1B; }
 .sug-pc-demo-count { color:#64748b; font-size:11px; margin:7px 0; }
 .sug-pc-verdict-text { color:#182230; font-size:12px; margin-bottom:8px; }
 .sug-pc-bars { margin-bottom:7px; }
@@ -2096,11 +2097,12 @@ body::before { display:none !important; }
   background:#FEF3C7;
   color:#92400E;
 }
-.sug-pc-rating, .sug-pc-rating.rating-mid, .sug-pc-rating.rating-low {
-  border:1px solid #dbeafe;
-  background:#eff6ff;
-  color:#2563EB;
-}
+.sug-pc-rating.rating-high { border:1px solid #BBF7D0; background:#DCFCE7; color:#166534; }
+.sug-pc-rating.rating-mid { border:1px solid #FDE68A; background:#FEF3C7; color:#92400E; }
+.sug-pc-rating.rating-low { border:1px solid #FECACA; background:#FEE2E2; color:#991B1B; }
+.home-stars.rating-high, .home-rating-value.rating-high { color:#166534; }
+.home-stars.rating-mid, .home-rating-value.rating-mid { color:#92400E; }
+.home-stars.rating-low, .home-rating-value.rating-low { color:#991B1B; }
 .mc-score.rating {
   border:1px solid #dbeafe;
   background:#eff6ff;
@@ -3012,6 +3014,7 @@ function renderHomeProducts() {
 
   grid.innerHTML = visibleProducts.map(product => {
     const rating = Number(product.rating) || 0;
+    const ratingClass = ratingBandClass(rating);
     const filledStars = Math.max(0, Math.min(5, Math.round(rating)));
     const reviewCount = product.totalReviews || product.reviews.length;
     const reviewCountLabel = product.reviewCountLabel || `${reviewCount} reviews`;
@@ -3024,10 +3027,10 @@ function renderHomeProducts() {
         <div class="home-product-content">
           <h3 class="home-product-name">${product.name}</h3>
           <div class="home-rating-row">
-            <span class="home-stars" aria-label="${rating.toFixed(1)} out of 5">
+            <span class="home-stars ${ratingClass}" aria-label="${rating.toFixed(1)} out of 5">
               <span>${'★'.repeat(filledStars)}</span><span class="home-stars-muted">${'★'.repeat(5 - filledStars)}</span>
             </span>
-            <span class="home-rating-value">${rating.toFixed(1)}</span>
+            <span class="home-rating-value ${ratingClass}">${rating.toFixed(1)}</span>
             <span>(${reviewCountLabel})</span>
           </div>
           <div class="home-price">${currency.format(product.price)}</div>
@@ -3676,8 +3679,12 @@ function renderLovedBanner(mostLoved, leastLoved) {
   banner.innerHTML = mlHTML + llHTML;
 }
 
+function ratingBandClass(rating) {
+  return rating >= 4 ? 'rating-high' : rating >= 3 ? 'rating-mid' : 'rating-low';
+}
+
 function renderRatingBadge(rating) {
-  const className = rating >= 4 ? '' : rating >= 3 ? 'rating-mid' : 'rating-low';
+  const className = ratingBandClass(rating);
   const ratingText = rating.toFixed(2).replace(/0+$/, '').replace(/\.$/, '.0');
   return `<span class="sug-pc-rating ${className}">${ratingText} ★</span>`;
 }
